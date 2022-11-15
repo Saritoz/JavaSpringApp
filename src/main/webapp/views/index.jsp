@@ -53,7 +53,7 @@
                     </ul>
                     <div class="d-flex">
                         <ul class="nav">
-                            <li class="nav-item"><a href="" class="nav-link"><i
+                            <li class="nav-item"><a href="/cart" class="nav-link"><i
                                         class="fa-solid fa-cart-shopping text-black"></i></a></li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-black" href="#" id="navbarDropdownUser"

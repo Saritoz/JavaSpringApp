@@ -23,4 +23,24 @@ public class HomeController {
     public String getFlowerInfo(@PathVariable int id) {
         return "flowerinfo";
     }
+
+    @RequestMapping(value="/cart", method = RequestMethod.GET)
+    public String getCart() {
+        return "cartstep1";
+    }
+
+    @RequestMapping(value="/cart-step-2", method = RequestMethod.GET)
+    public String getFillInfo() {
+        return "cartstep2";
+    }
+
+    @RequestMapping(value="/cart-step-2", method = RequestMethod.POST)
+    public String postFillInfo() {
+        return "redirect:/cart-step-3";
+    }
+
+    @RequestMapping(value="/cart-step-3", method = RequestMethod.GET)
+    public String getPayment() {
+        return "cartstep3";
+    }
 }

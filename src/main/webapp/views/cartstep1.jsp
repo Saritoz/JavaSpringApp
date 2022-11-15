@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -89,8 +90,8 @@
                         </tr>
                     </tfoot>
                   </table>
-                  <a href="" class="d-inline-block ct-btn-cart" style="--ct-color: #0000ff">Tiếp tục mua hàng</a>
-                  <a href="" class="d-inline-block ct-btn-cart" style="--ct-color: #ff0000">Thanh toán</a>
+                  <a href="/" class="d-inline-block ct-btn-cart me-2" style="--ct-color: #0000ff">Tiếp tục mua hàng</a>
+                  <a href="/cart-step-2" class="d-inline-block ct-btn-cart me-2" style="--ct-color: #ff0000">Thanh toán</a>
             </div>
         </div>
     </section>
