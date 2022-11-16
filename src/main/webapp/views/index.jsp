@@ -68,7 +68,7 @@
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
-                                    <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
+                                    <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
                                 </ul>
                             </li>
                         </ul>

@@ -43,4 +43,9 @@ public class HomeController {
     public String getPayment() {
         return "cartstep3";
     }
+
+    @RequestMapping(value="/profile", method = RequestMethod.GET)
+    public String getProfile() {
+        return "profile";
+    }
 }
