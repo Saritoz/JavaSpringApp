@@ -8,9 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Info Flower</title>
     <link rel="stylesheet" href="../css/flowerinfo.css" />
+    <link rel="stylesheet" href="../css/header.css">
 </head>
 
 <body>
+    <%@include file="../components/header.jsp" %>
     <section class="info-flower container m-header">
         <div class="flower-title">
             <p class="flower-name">Flower 1</p>

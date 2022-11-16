@@ -8,9 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fill Info</title>
     <link rel="stylesheet" href="../css/cartstep2.css">
+    <link rel="stylesheet" href="../css/header.css">
 </head>
 
 <body>
+    <%@include file="../components/header.jsp" %>
     <section class="cart step-2 container m-header">
         <div class="cart-progress">
             <div class="cart-step1 step-active">

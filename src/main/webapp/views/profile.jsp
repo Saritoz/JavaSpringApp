@@ -8,8 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/header.css">
 </head>
 <body>
+    <%@include file="../components/header.jsp" %>
     <section class="personal-info container m-header">
         <div class="image-user">
             <img src="../imgs/defaultimg.png" alt="" width="100%">
