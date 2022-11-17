@@ -50,7 +50,7 @@
                         </a>
                         <ul class="dropdown-menu ct-subnavbar ct-subnavbar-right"
                             aria-labelledby="navbarDropdownUser">
-                            <li><a class="dropdown-item" href="#">Đăng nhập</a></li>
+                            <li><a class="dropdown-item" href="/login">Đăng nhập</a></li>
                             <li><a class="dropdown-item" href="#">Đăng kí</a></li>
                             <li>
                                 <hr class="dropdown-divider">

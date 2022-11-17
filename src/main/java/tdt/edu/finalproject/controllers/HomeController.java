@@ -14,6 +14,11 @@ public class HomeController {
         return "index";
     }
 
+    @RequestMapping(value="/login", method = RequestMethod.GET)
+    public String getLoginPage() {
+        return "login";
+    }
+
     @RequestMapping(value="/flowers", method = RequestMethod.GET)
     public String getFlowerList() {
         return "flowerlist";
