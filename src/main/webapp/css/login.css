@@ -5,12 +5,73 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #03a9f4;
-    transition: 0.5s;
+    background-image: linear-gradient(45deg, #3cb6a8, #cdb245);
+    transition: 0.5s ease-in-out;
+    position: relative;
+}
+
+.validation-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 0%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: 0.25s ease-in-out;
+    z-index: 0;
+}
+
+.validation-box::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 50%;
+    width: 0%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: 0.25s ease-in-out;
+    z-index: 0;
+}
+
+
+.validation-box.login-complete-1::before, 
+.validation-box.login-complete-1::after{
+    width: 25%;
+}
+
+.validation-box.login-complete-2::before, 
+.validation-box.login-complete-2::after{
+    width: 50%;
+}
+
+.validation-box.signup-complete-1::before, 
+.validation-box.signup-complete-1::after{
+    width: 10%;
+}
+
+.validation-box.signup-complete-2::before, 
+.validation-box.signup-complete-2::after{
+    width: 20%;
+}
+
+.validation-box.signup-complete-3::before, 
+.validation-box.signup-complete-3::after{
+    width: 30%;
+}
+
+.validation-box.signup-complete-4::before, 
+.validation-box.signup-complete-4::after{
+    width: 40%;
+}
+
+.validation-box.signup-complete-5::before, 
+.validation-box.signup-complete-5::after{
+    width: 50%;
 }
 
 .validation-box.active {
-    background: #f43648;
+    background-image: linear-gradient(45deg, #cdb245, #3cb6a8);
 }
 
 .validation-container {
@@ -30,6 +91,7 @@
     align-items: center;
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 5px 45px rgba(0, 0, 0, 0.15);
+    z-index: 5;
 }
 
 .bg-container .box {
