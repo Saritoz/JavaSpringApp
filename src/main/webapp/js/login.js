@@ -17,7 +17,7 @@ const inputSignupConfirmPassword = document.querySelector("#signup-confirmPasswo
 let loginComplete = 0;
 let signupComplete = 0;
 
-changeSigninFormBtn.addEventListener('click', () => {
+changeSignupFormBtn.addEventListener('click', () => {
     formBox.classList.add('active');
     validationBox.classList.add('active');
     validationBox.classList.remove("login-complete-1","login-complete-2");
@@ -26,7 +26,7 @@ changeSigninFormBtn.addEventListener('click', () => {
     loginComplete = 0;
 })
 
-changeSignupFormBtn.addEventListener('click', () => {
+changeSigninFormBtn.addEventListener('click', () => {
     formBox.classList.remove('active');
     validationBox.classList.remove('active');
     validationBox.classList.remove("signup-complete-1","signup-complete-2","signup-complete-3","signup-complete-4","signup-complete-5");

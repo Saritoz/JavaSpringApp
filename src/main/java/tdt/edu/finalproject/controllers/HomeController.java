@@ -11,32 +11,32 @@ public class HomeController {
 
     @RequestMapping(value="", method = RequestMethod.GET)
     public String getHomePage() {
-        return "index";
+        return "/user/index";
     }
 
     @RequestMapping(value="/login", method = RequestMethod.GET)
     public String getLoginPage() {
-        return "login";
+        return "/user/login";
     }
 
     @RequestMapping(value="/flowers", method = RequestMethod.GET)
     public String getFlowerList() {
-        return "flowerlist";
+        return "/user/flowerlist";
     }
 
     @RequestMapping(value="/flowerinfo/{id}", method = RequestMethod.GET)
     public String getFlowerInfo(@PathVariable int id) {
-        return "flowerinfo";
+        return "/user/flowerinfo";
     }
 
     @RequestMapping(value="/cart", method = RequestMethod.GET)
     public String getCart() {
-        return "cartstep1";
+        return "/user/cartstep1";
     }
 
     @RequestMapping(value="/cart-step-2", method = RequestMethod.GET)
     public String getFillInfo() {
-        return "cartstep2";
+        return "/user/cartstep2";
     }
 
     @RequestMapping(value="/cart-step-2", method = RequestMethod.POST)
@@ -46,11 +46,16 @@ public class HomeController {
 
     @RequestMapping(value="/cart-step-3", method = RequestMethod.GET)
     public String getPayment() {
-        return "cartstep3";
+        return "/user/cartstep3";
+    }
+
+    @RequestMapping(value="/cart-step-3", method = RequestMethod.POST)
+    public String postPayment() {
+        return "redirect:/";
     }
 
     @RequestMapping(value="/profile", method = RequestMethod.GET)
     public String getProfile() {
-        return "profile";
+        return "/user/profile";
     }
 }

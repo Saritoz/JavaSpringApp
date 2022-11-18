@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Method</title>
-    <link rel="stylesheet" href="../css/cartstep3.css">
-    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../../css/user/cartstep3.css">
+    <link rel="stylesheet" href="../../css/user/header.css">
 </head>
 
 <body>
-    <%@include file="../components/header.jsp" %>
+    <%@include file="../../components/header.jsp" %>
     <section class="cart step-3 container m-header">
         <div class="cart-progress">
             <div class="cart-step1 step-active">
@@ -95,7 +95,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
-    <script src="../js/formvalidation.js"></script>
+    <script src="../../js/formvalidation.js"></script>
 </body>
 
 </html>

@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
-    <link rel="stylesheet" href="../css/cartstep1.css">
-    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../../css/user/cartstep1.css">
+    <link rel="stylesheet" href="../../css/user/header.css">
 </head>
 
 <body>
-    <%@include file="../components/header.jsp" %>
+    <%@include file="../../components/header.jsp" %>
     <section class="cart step-1 container m-header">
         <div class="cart-progress">
             <div class="cart-step1 step-active">
@@ -45,21 +45,21 @@
                     </thead>
                     <tbody class="text-center" style="vertical-align: middle;">
                         <tr>
-                            <td><img class="ct-img" src="../imgs/itemflower1.jpg" alt="" width="200"></td>
+                            <td><img class="ct-img" src="../../imgs/itemflower1.jpg" alt="" width="200"></td>
                             <td>Flower 1</td>
                             <td><input type="number" value="1" min="1" max="99" width="50"></td>
                             <td>283.000 VND</td>
                             <td><i class="fa-solid fa-trash-can text-danger ct-icon"></i></td>
                         </tr>
                         <tr>
-                            <td><img class="ct-img" src="../imgs/itemflower1.jpg" alt="" width="200"></td>
+                            <td><img class="ct-img" src="../../imgs/itemflower1.jpg" alt="" width="200"></td>
                             <td>Flower 1</td>
                             <td><input type="number" value="1" min="1" max="99" width="50"></td>
                             <td>283.000 VND</td>
                             <td><i class="fa-solid fa-trash-can text-danger ct-icon"></i></td>
                         </tr>
                         <tr>
-                            <td><img class="ct-img" src="../imgs/itemflower1.jpg" alt="" width="200"></td>
+                            <td><img class="ct-img" src="../../imgs/itemflower1.jpg" alt="" width="200"></td>
                             <td>Flower 1</td>
                             <td><input type="number" value="1" min="1" max="99" width="50"></td>
                             <td>283.000 VND</td>

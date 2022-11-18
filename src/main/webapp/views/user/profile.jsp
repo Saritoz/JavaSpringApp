@@ -7,14 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="../css/profile.css">
-    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/user/profile.css">
+    <link rel="stylesheet" href="../css/user/header.css">
 </head>
 <body>
-    <%@include file="../components/header.jsp" %>
+    <%@include file="../../components/header.jsp" %>
     <section class="personal-info container m-header">
         <div class="image-user">
-            <img src="../imgs/defaultimg.png" alt="" width="100%">
+            <img src="../../imgs/defaultimg.png" alt="" width="100%">
         </div>
         <div class="name-user">
             <p>Sarito</p>

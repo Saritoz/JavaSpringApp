@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Info Flower</title>
-    <link rel="stylesheet" href="../css/flowerinfo.css" />
-    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../../css/user/flowerinfo.css" />
+    <link rel="stylesheet" href="../../css/user/header.css">
 </head>
 
 <body>
-    <%@include file="../components/header.jsp" %>
+    <%@include file="../../components/header.jsp" %>
     <section class="info-flower container m-header">
         <div class="flower-title">
             <p class="flower-name">Flower 1</p>
@@ -22,18 +22,18 @@
                 <div class="slider-container">
                     <div class="image-slider" id="image-slider">
                         <div class="images">
-                            <img class="item-slider" src="../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-slider" src="../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-slider" src="../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-slider" src="../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-slider" src="../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-slider" src="../../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-slider" src="../../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-slider" src="../../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-slider" src="../../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-slider" src="../../imgs/itemflower1.jpg" alt="" />
                         </div>
                         <div class="thumbnails">
-                            <img class="item-thumbnail" src="../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-thumbnail" src="../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-thumbnail" src="../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-thumbnail" src="../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-thumbnail" src="../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-thumbnail" src="../../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-thumbnail" src="../../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-thumbnail" src="../../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-thumbnail" src="../../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-thumbnail" src="../../imgs/itemflower1.jpg" alt="" />
                         </div>
                         <div class="back-btn">
                             <i class="fa-solid fa-chevron-left"></i>
@@ -93,7 +93,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
-    <script src="../js/flowerinfo.js"></script>
+    <script src="../../js/flowerinfo.js"></script>
 </body>
 
 </html>

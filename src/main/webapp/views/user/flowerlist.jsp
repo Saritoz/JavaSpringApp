@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flowers</title>
-    <link rel="stylesheet" href="../css/flowerlist.css">
-    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../../css/user/flowerlist.css">
+    <link rel="stylesheet" href="../../css/user/header.css">
 </head>
 
 <body>
-    <%@include file="../components/header.jsp" %>
+    <%@include file="../../components/header.jsp" %>
     <section class="flower-list container m-header">
         <div class="row">
             <div class="col-4">
@@ -58,7 +58,7 @@
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-2">
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -74,7 +74,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -90,7 +90,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -106,7 +106,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -122,7 +122,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -138,7 +138,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -154,7 +154,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -170,7 +170,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -186,7 +186,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -202,7 +202,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -218,7 +218,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">
@@ -234,7 +234,7 @@
                     </div>
                     <div class="col">
                         <div class="card" style="width: 100%;">
-                            <img src="../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
+                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
                             <div class="ct-card-flip">
                                 <div class="ct-flip-box">
                                     <div class="card-body ct-card-front">

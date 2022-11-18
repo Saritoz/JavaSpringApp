@@ -1,4 +1,4 @@
-@import 'global.css';
+@import '../global.css';
 @import 'cart.css';
 
 .ct-table-body tr td {
