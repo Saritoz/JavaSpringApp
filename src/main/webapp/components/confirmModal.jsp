@@ -2,6 +2,7 @@
 <%  String idModal = (String)request.getParameter("idModal");
     String titleModal = (String)request.getParameter("titleModal");
     String contentModal = (String)request.getParameter("contentModal");
+    String idBtn = (String)request.getParameter("idBtn");
 %>
     <div class="modal fade" id="<%=idModal%>" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -15,7 +16,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-outline-danger">Ok</button>
+                    <button type="button" class="btn btn-outline-danger" id="<%=idBtn%>">Ok</button>
                 </div>
             </div>
         </div>

@@ -1,3 +1,4 @@
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <div class="m-5">
         <div class="d-flex justify-content-end mb-3">
@@ -15,39 +16,21 @@
                 </tr>
             </thead>
             <tbody class="text-center">
-                <tr onclick="openMoreInfoModal(event)">
-                    <td>1</td>
-                    <td>Duy's Flower</td>
-                    <td>250000</td>
-                    <td>Just flowers.</td>
-                    <td>250</td>
-                    <td>
-                        <div>
-                            <a class="text-info me-2" href="#" onclick="openEditProductModal(this); return false;">Edit</a>
-                            <a class="text-danger" href="#" onclick="openDeleteProductModal(this)">Delete</a>
-                        </div>
-                    </td>
-                </tr>
-                <tr onclick="openMoreInfoModal(event)">
-                    <td>1</td>
-                    <td>Duy's Flower</td>
-                    <td>250000</td>
-                    <td>Just flowers.</td>
-                    <td>250</td>
-                    <td><a class="text-info me-2" href="#" onclick="openEditProductModal(this); return false;">Edit</a>
-                        <a class="text-danger" href="#" onclick="openDeleteProductModal(this)">Delete</a>
-                    </td>
-                </tr>
-                <tr onclick="openMoreInfoModal(event)">
-                    <td>1</td>
-                    <td>Duy's Flower</td>
-                    <td>250000</td>
-                    <td>Just flowers.</td>
-                    <td>250</td>
-                    <td><a class="text-info me-2" href="#" onclick="openEditProductModal(this); return false;">Edit</a>
-                        <a class="text-danger" href="#" onclick="openDeleteProductModal(this)">Delete</a>
-                    </td>
-                </tr>
+                <c:forEach var="flower" items="${flowers}" varStatus="loop">
+                    <tr data-name="${flower.getName()}" data-price="${flower.getPrice()}" data-desc="${flower.getDescription()}" data-quantity="${flower.getQuantity()}" onclick="openMoreInfoModal(this, event)">
+                        <td>${loop.index+1}</td>
+                        <td>${flower.getName()}</td>
+                        <td>${flower.getPrice()}</td>
+                        <td>${flower.getDescription()}</td>
+                        <td>${flower.getQuantity()}</td>
+                        <td>
+                            <div>
+                                <a data-id="${flower.getId()}" data-name="${flower.getName()}" data-price="${flower.getPrice()}" data-desc="${flower.getDescription()}" data-quantity="${flower.getQuantity()}" class="text-info me-2" href="#" onclick="openEditProductModal(this); return false;">Edit</a>
+                                <a data-id="${flower.getId()}" data-name="${flower.getName()}" class="text-danger" href="#" onclick="openDeleteProductModal(this)">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                </c:forEach>    
             </tbody>
         </table>
     </div>
@@ -56,34 +39,34 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLabel">New product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>    
                 </div>
                 <div class="modal-body">
-                    <form action="" id="addform" method="post" class="needs-validation" novalidate>
+                    <form action="/admin/productmanagement/add" id="addform" method="post" class="needs-validation" novalidate>
                         <div class="mb-3">
                             <label for="name-product" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name-product" value="" required>
+                            <input type="text" class="form-control" id="name-product" name="name-product" value="" required>
                             <div class="invalid-feedback">
                               Name cannot empty!
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="price-product" class="form-label">Price</label>
-                            <input type="text" class="form-control" id="price-product" value="" required>
+                            <input type="text" class="form-control" id="price-product" name="price-product" value="" required>
                             <div class="invalid-feedback">
                               Price cannot empty!
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="desc-product" class="form-label">Description</label>
-                            <textarea class="form-control" id="desc-product" placeholder="Description" required></textarea>
+                            <textarea class="form-control" id="desc-product" name="desc-product" required></textarea>
                             <div class="invalid-feedback">
                               Description cannot empty!
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="quantity-product" class="form-label">Quantity</label>
-                            <input type="text" class="form-control" id="quantity-product" value="" required>
+                            <input type="text" class="form-control" id="quantity-product" name="quantity-product" value="" required>
                             <div class="invalid-feedback">
                               Price cannot empty!
                             </div>
@@ -112,29 +95,30 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" id="editform" method="post">
+                    <form action="/admin/productmanagement/edit" id="editform" method="post">
+                        <input type="text" class="form-control" id="id-product" name="id-product" value="" hidden>
                         <div class="mb-3">
                             <label for="name-product" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name-product" value="Mark">
+                            <input type="text" class="form-control" id="name-product" name="name-product" value="Mark">
                             
                         </div>
                         <div class="mb-3">
                             <label for="price-product" class="form-label">Price</label>
-                            <input type="text" class="form-control" id="price-product" value="Mark">
+                            <input type="text" class="form-control" id="price-product" name="price-product" value="Mark">
                             
                         </div>
                         <div class="mb-3">
                             <label for="desc-product" class="form-label">Description</label>
-                            <textarea class="form-control" id="desc-product" placeholder="Description"></textarea>
+                            <textarea class="form-control" id="desc-product" name="desc-product"></textarea>
                             
                         </div>
                         <div class="mb-3">
                             <label for="quantity-product" class="form-label">Quantity</label>
-                            <input type="text" class="form-control" id="quantity-product" value="Mark">
+                            <input type="text" class="form-control" id="quantity-product" name="quantity-product" value="Mark">
                         </div>
                         <div class="mb-3">
                             <label for="images-product" class="form-label">Images</label>
-                            <input type="file" class="form-control" id="images-product" multiple accept="image/*">
+                            <input type="file" class="form-control" id="images-product" name="images-product" multiple accept="image/*">
                         </div>
                     </form>
                 </div>
@@ -193,6 +177,7 @@
         <jsp:param name="idModal" value="deleteProductModal" />
         <jsp:param name="titleModal" value="Delete Product" />
         <jsp:param name="contentModal" value="Are you sure to delete this products?" />
+        <jsp:param name="idBtn" value="btn-delete-flower" />
     </jsp:include>
     <script src="../../js/admin/productmanagement.js"></script>
     <script src="../../js/formvalidation.js"></script>
