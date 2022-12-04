@@ -1,20 +1,30 @@
 package tdt.edu.finalproject.controllers;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import tdt.edu.finalproject.models.Flower;
 import tdt.edu.finalproject.repositories.FlowerRepository;
+import tdt.edu.finalproject.repositories.ImageRepository;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
     private FlowerRepository flowerRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @RequestMapping("/login")
     public String getLogin(ModelMap modelMap) {
@@ -47,7 +57,8 @@ public class AdminController {
     @RequestMapping(value = "/productmanagement/add", method = RequestMethod.POST)
     public String postAddProduct(ModelMap modelMap, @RequestParam("name-product") String name_product,
             @RequestParam("price-product") int price_product, @RequestParam("desc-product") String desc_product,
-            @RequestParam("quantity-product") int quantity_product) {
+            @RequestParam("quantity-product") int quantity_product,
+            @RequestParam("images-product") MultipartFile[] multipartFile) {
 
         String error = "";
         if (name_product.isEmpty()) {
@@ -73,9 +84,27 @@ public class AdminController {
             return "/admin/layout";
         }
 
-        Flower flower = new Flower(0, name_product, price_product, desc_product,
-                quantity_product, "null");
-        flowerRepository.save(flower);
+        List<String> imageStrings = new ArrayList<String>();
+        try {
+            for (MultipartFile multipartF : multipartFile) {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss ");
+                Date date = new Date();
+                String nameImage = formatter.format(date) + multipartF.getOriginalFilename();
+                imageStrings.add(nameImage);
+                imageRepository.saveImage(multipartF, nameImage);
+            }
+            Flower flower = new Flower(0, name_product, price_product, desc_product,
+                    quantity_product, (imageStrings.size()) > 0 ? (imageStrings.get(0)) : null,
+                    (imageStrings.size()) > 1 ? (imageStrings.get(1)) : null,
+                    (imageStrings.size()) > 2 ? (imageStrings.get(2)) : null,
+                    (imageStrings.size()) > 3 ? (imageStrings.get(3)) : null,
+                    (imageStrings.size()) > 4 ? (imageStrings.get(4)) : null);
+            flowerRepository.save(flower);
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+
         Iterable<Flower> flowers = flowerRepository.findAll();
         modelMap.addAttribute("flowers", flowers);
         modelMap.addAttribute("message", "Thêm sản phẩm thành công!");
@@ -85,9 +114,11 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/productmanagement/edit", method = RequestMethod.POST)
-    public String postEditProduct(ModelMap modelMap, @RequestParam("id-product") int id_product, @RequestParam("name-product") String name_product,
+    public String postEditProduct(ModelMap modelMap, @RequestParam("id-product") int id_product,
+            @RequestParam("name-product") String name_product,
             @RequestParam("price-product") int price_product, @RequestParam("desc-product") String desc_product,
-            @RequestParam("quantity-product") int quantity_product) {
+            @RequestParam("quantity-product") int quantity_product,
+            @RequestParam("images-product") MultipartFile[] multipartFile) {
 
         String error = "";
         if (name_product.isEmpty()) {
@@ -113,9 +144,27 @@ public class AdminController {
             return "/admin/layout";
         }
 
-        Flower flower = new Flower(id_product, name_product, price_product, desc_product,
-                quantity_product, "null");
-        flowerRepository.save(flower);
+        List<String> imageStrings = new ArrayList<String>();
+        try {
+            for (MultipartFile multipartF : multipartFile) {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss ");
+                Date date = new Date();
+                String nameImage = formatter.format(date) + multipartF.getOriginalFilename();
+                imageStrings.add(nameImage);
+                imageRepository.saveImage(multipartF, nameImage);
+            }
+            Flower flower = new Flower(id_product, name_product, price_product, desc_product,
+                    quantity_product, (imageStrings.size()) > 0 ? (imageStrings.get(0)) : null,
+                    (imageStrings.size()) > 1 ? (imageStrings.get(1)) : null,
+                    (imageStrings.size()) > 2 ? (imageStrings.get(2)) : null,
+                    (imageStrings.size()) > 3 ? (imageStrings.get(3)) : null,
+                    (imageStrings.size()) > 4 ? (imageStrings.get(4)) : null);
+            flowerRepository.save(flower);
+            }catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+    
         Iterable<Flower> flowers = flowerRepository.findAll();
         modelMap.addAttribute("flowers", flowers);
         modelMap.addAttribute("message", "Sửa sản phẩm thành công!");

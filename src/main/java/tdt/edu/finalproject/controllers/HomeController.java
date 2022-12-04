@@ -2,10 +2,8 @@ package tdt.edu.finalproject.controllers;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
-import org.aspectj.weaver.AjAttribute.SourceContextAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import tdt.edu.finalproject.models.Account;
+import tdt.edu.finalproject.models.Flower;
 import tdt.edu.finalproject.repositories.AccountRepository;
+import tdt.edu.finalproject.repositories.FlowerRepository;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private FlowerRepository flowerRepository;
 
     private HashPassword hashPassword = new HashPassword();
 
@@ -118,17 +121,27 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/flowers", method = RequestMethod.GET)
-    public String getFlowerList() {
+    public String getFlowerList(ModelMap modelMap) {
+        Iterable<Flower> flowers = flowerRepository.findAll();
+        modelMap.addAttribute("flowers", flowers);
         return "/user/flowerlist";
     }
 
     @RequestMapping(value = "/flowerinfo/{id}", method = RequestMethod.GET)
-    public String getFlowerInfo(@PathVariable int id) {
+    public String getFlowerInfo(@PathVariable int id, ModelMap modelMap) {
+        Optional<Flower> flower = flowerRepository.findById(id);
+        modelMap.addAttribute("flower", flower.get());
         return "/user/flowerinfo";
     }
 
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
     public String getCart() {
+        return "/user/cartstep1";
+    }
+
+    @RequestMapping(value = "/cart", method = RequestMethod.POST)
+    public String postCart(ModelMap modelMap, @RequestParam("flower-id") int flower_id,
+            @RequestParam("flower-amount") int flower_amount) {
         return "/user/cartstep1";
     }
 

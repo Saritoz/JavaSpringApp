@@ -1,3 +1,4 @@
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,198 +57,24 @@
             </div>
             <div class="col-8">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-2">
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="/flowerinfo/1" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
+                    <c:forEach var="flower" items="${flowers}">
+                        <div class="col">
+                            <div class="card" style="width: 100%;">
+                                <img src="../../images/${flower.getImage1()}" class="card-img-top" alt="..." width="100%">
+                                <div class="ct-card-flip">
+                                    <div class="ct-flip-box">
+                                        <div class="card-body ct-card-front">
+                                            <div class="card-title text-center">${flower.getName()}</div>
+                                            <p class="ct-text-gray text-center text-danger">${flower.getPrice()} VND</p>
+                                        </div>
+                                        <div class="card-body ct-card-back">
+                                            <a href="/flowerinfo/${flower.getId()}" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card" style="width: 100%;">
-                            <img src="../../imgs/itemflower1.jpg" class="card-img-top" alt="..." width="100%">
-                            <div class="ct-card-flip">
-                                <div class="ct-flip-box">
-                                    <div class="card-body ct-card-front">
-                                        <div class="card-title text-center">Flower A</div>
-                                        <p class="ct-text-gray text-center text-danger">236.000vnd</p>
-                                    </div>
-                                    <div class="card-body ct-card-back">
-                                        <a href="" class="ct-outline-button" style="--ct-color: green">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </c:forEach>
                 </div>
             </div>
         </div>

@@ -42,7 +42,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>    
                 </div>
                 <div class="modal-body">
-                    <form action="/admin/productmanagement/add" id="addform" method="post" class="needs-validation" novalidate>
+                    <form action="/admin/productmanagement/add" id="addform" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
                         <div class="mb-3">
                             <label for="name-product" class="form-label">Name</label>
                             <input type="text" class="form-control" id="name-product" name="name-product" value="" required>
@@ -73,7 +73,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="images-product" class="form-label">Images</label>
-                            <input type="file" class="form-control" id="images-product" multiple required accept="image/*">
+                            <input type="file" class="form-control" id="images-product" name="images-product" multiple required accept="image/*">
                             <div class="invalid-feedback">
                               Please choose maximum 5 files
                             </div>
@@ -95,7 +95,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/admin/productmanagement/edit" id="editform" method="post">
+                    <form action="/admin/productmanagement/edit" id="editform" method="post" enctype="multipart/form-data">
                         <input type="text" class="form-control" id="id-product" name="id-product" value="" hidden>
                         <div class="mb-3">
                             <label for="name-product" class="form-label">Name</label>

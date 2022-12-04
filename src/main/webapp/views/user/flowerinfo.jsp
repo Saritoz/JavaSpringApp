@@ -1,3 +1,4 @@
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,26 +15,27 @@
 <body>
     <%@include file="../../components/header.jsp" %>
     <section class="info-flower container m-header">
+        <input id="flower-id" type="text" value="${flower.getId()}" hidden readonly>
         <div class="flower-title">
-            <p class="flower-name">Flower 1</p>
+            <p class="flower-name"><c:out value = "${flower.getName()}"/></p>
         </div>
         <div class="row row-cols-1 row-cols-lg-2 g-4">
             <div class="col-12 col-lg-6">
                 <div class="slider-container">
                     <div class="image-slider" id="image-slider">
                         <div class="images">
-                            <img class="item-slider" src="../../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-slider" src="../../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-slider" src="../../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-slider" src="../../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-slider" src="../../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-slider" src="../../images/${flower.getImage1()}" alt="" />
+                            <img class="item-slider" src="../../images/${flower.getImage2()}" alt="" />
+                            <img class="item-slider" src="../../images/${flower.getImage3()}" alt="" />
+                            <img class="item-slider" src="../../images/${flower.getImage4()}" alt="" />
+                            <img class="item-slider" src="../../images/${flower.getImage5()}" alt="" />
                         </div>
                         <div class="thumbnails">
-                            <img class="item-thumbnail" src="../../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-thumbnail" src="../../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-thumbnail" src="../../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-thumbnail" src="../../imgs/itemflower1.jpg" alt="" />
-                            <img class="item-thumbnail" src="../../imgs/itemflower1.jpg" alt="" />
+                            <img class="item-thumbnail" src="../../images/${flower.getImage1()}" alt="" />
+                            <img class="item-thumbnail" src="../../images/${flower.getImage2()}" alt="" />
+                            <img class="item-thumbnail" src="../../images/${flower.getImage3()}" alt="" />
+                            <img class="item-thumbnail" src="../../images/${flower.getImage4()}" alt="" />
+                            <img class="item-thumbnail" src="../../images/${flower.getImage5()}" alt="" />
                         </div>
                         <div class="back-btn">
                             <i class="fa-solid fa-chevron-left"></i>
@@ -61,20 +63,20 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="addcart" role="tabpanel" aria-labelledby="addcart-tab">
-                        <div class="mt-2 text-uppercase text-danger fs-4 status-item">Còn hàng</div>
-                        <div class="my-2 price-item">283.000 <span class="currency-price-item">VND</span></div>
+                        <div class="mt-2 text-uppercase text-danger fs-4 status-item"><c:out value = "${flower.getQuantity()>0?'Còn hàng':'Hết hàng'}"/></div>
+                        <div class="my-2 price-item"><c:out value = "${flower.getPrice()}" /> <span class="currency-price-item">VND</span></div>
                         <div class="mb-4">
                             <label class="amount-label text-gray" for="amount-item">Số lượng:</label>
                             <button class="fa-solid fa-minus text-gray ct-btn-amount" onclick="subAmount()"></button>
                             <input type="number" class="amount-item" name="amount" value="1" min="1" maxlength="2" id="amount">
                             <button class="fa-solid fa-plus text-gray ct-btn-amount" onclick="addAmount()"></button>
                         </div>
-                        <a href="" class="ct-btn me-4" style="--ct-color: #ffa500">Đặt hàng ngay</a>
-                        <a href="" class="ct-btn" style="--ct-color: #ffd400">Thêm vào giỏ</a>
+                        <a href="#" id="btn-order-now-info" class="ct-btn me-4" style="--ct-color: #ffa500">Đặt hàng ngay</a>
+                        <a href="" id="btn-add-cart-info" class="ct-btn" style="--ct-color: #ffd400">Thêm vào giỏ</a>
                     </div>
                     <div class="tab-pane fade" id="desc" role="tabpanel" aria-labelledby="desc-tab">
                         <p class="mt-2 text-justify text-gray">
-                            Hướng dương luôn được biết đến như một loài hoa mang đến sự may mắn trong tình yêu, công việc hay sự nghiệp. Một giỏ hoa hướng dương là một lời chúc thành công đầy chân thành nhất. Đôi khi trong cuộc sống không cần gì nhiều lằm, chỉ một giỏ hoa xinh xắn bất ngờ sẽ là một lời động viên tâm hồn lớn lao đối với mỗi người đấy. Giỏ hoa nụ cười phù hợp để làm quà tặng trong dịp sinh nhật, mừng khai trương và tất cả những sự kiện đặc biệt trong năm.
+                            <c:out value = "${flower.getDescription()}"/>
                         </p>
                     </div>
                     <div class="tab-pane fade" id="moreinfo" role="tabpanel" aria-labelledby="moreinfo-tab">
