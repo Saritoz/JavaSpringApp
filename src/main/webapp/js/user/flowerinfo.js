@@ -61,7 +61,6 @@ function subAmount() {
 }
 
 btn_order_now.addEventListener("click", () => {
-  console.log("click");
   var form = document.createElement("form");
   form.setAttribute("method", "post");
   form.setAttribute("action", "/cart/ordernow");

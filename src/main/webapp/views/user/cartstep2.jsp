@@ -1,3 +1,4 @@
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +35,7 @@
         <div class="row row-cols-1 row-cols-lg-2 g-4">
             <div class="col-12 col-lg-8">
                 <div>Vui lòng điền đầy đủ thông tin giao hàng</div>
-                <form action="/cart-step-2" method="post" class="row g-3 needs-validation" novalidate>
+                <form action="" method="post" class="row g-3 needs-validation" id="form-ct2" novalidate>
                     <div class="col-12 col-lg-6">
                         <label for="fullname" class="form-label">Họ tên</label>
                         <input type="text" name="fullname" class="form-control" id="fullname" value="" required
@@ -69,7 +70,7 @@
                     </div>
                     <div class="col-12">
                         <a href="" class="d-block text-warning">&lt;&lt; Quay lại giỏ hàng</a>
-                        <button class="ms-auto float-end ct-btn-cart" style="--ct-color: #0000ff">Tiếp tục Thanh toán</button>
+                        <button id="btn-ct2" class="ms-auto float-end ct-btn-cart" style="--ct-color: #0000ff">Tiếp tục Thanh toán</button>
                         <div class="clearfix"></div>
                     </div>
                 </form>
@@ -84,21 +85,20 @@
                         </tr>
                     </thead>
                     <tbody class="ct-table-body" style="vertical-align: middle;">
+                        <c:forEach var="cart" items="${carts}">
                         <tr>
-                            <td>Flower 1</td>
-                            <td>1</td>
-                            <td>283.000 VND</td>
+                            <input type="text" id="cart-id" value="${cart.getId()}">
+                            <input type="text" id="cart-status" value="${cart.getStatus()}">
+                            <td>${cart.getNameFlower()}</td>
+                            <td>${cart.getQuantityFlower()}</td>
+                            <td>${cart.getTotal()} VND</td>
                         </tr>
-                        <tr>
-                            <td>Flower 2</td>
-                            <td>1</td>
-                            <td>283.000 VND</td>
-                        </tr>
+                    </c:forEach>
                     </tbody>
                     <tfoot class="ct-table-footer">
                         <tr>
                             <th colspan="2">Tạm tính</th>
-                            <th>566.000 VND</th>
+                            <th>${total} VND</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -109,6 +109,7 @@
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
     <script src="../../js/formvalidation.js"></script>
+    <script src="../../js/user/cartstep2.js"></script>
 </body>
 
 </html>

@@ -66,6 +66,11 @@
                             toán</button>
                         <div class="clearfix"></div>
                     </div>
+                    <input type="text" name="cart-id" value="${card-id}">
+                    <input type="text" name="fullname" value="${fullname}">
+                    <input type="text" name="pnumber" value="${pnumber}">
+                    <input type="text" name="email" value="${email}">
+                    <input type="text" name="address" value="${address}">
                 </form>
             </div>
             <div class="col-12 col-lg-4">
@@ -73,7 +78,7 @@
                     <tbody class="ct-table-body" style="vertical-align: middle;">
                         <tr>
                             <td>Tổng tiền hàng</td>
-                            <td>566.000 VND</td>
+                            <td>${total}</td>
                         </tr>
                         <tr>
                             <td>Phí vận chuyển</td>

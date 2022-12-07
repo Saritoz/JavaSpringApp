@@ -20,41 +20,65 @@
                 <div class="filter-title">Bộ lọc sản phẩm</div>
                 <form action="" method="post">
                     <div class="mb-3">
-                        <label for="sort-asc-desc" class="form-label">Theo thứ tự</label>
+                        <label for="sort-asc-desc" class="form-label">Sắp xếp theo giá</label>
                         <select id="sort-asc-desc" class="form-select" aria-label="Sort" name="sort-price">
-                            <option value="0" selected>Chọn thứ tự</option>
-                            <option value="1">Thấp đến cao</option>
-                            <option value="2">Cao đến thấp</option>
+                            <c:set var="val" value="${sort_price}"/>
+                            <c:choose> 
+                            <c:when test="${val == '1'}">
+                                <option value="0">Chọn thứ tự</option>
+                                <option value="1" selected>Thấp đến cao</option>
+                                <option value="2">Cao đến thấp</option>
+                            </c:when>
+                            <c:when test="${val == '2'}">
+                                <option value="0">Chọn thứ tự</option>
+                                <option value="1">Thấp đến cao</option>
+                                <option value="2" selected>Cao đến thấp</option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="0" selected>Chọn thứ tự</option>
+                                <option value="1">Thấp đến cao</option>
+                                <option value="2">Cao đến thấp</option>
+                            </c:otherwise>
+                            </c:choose>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="sort-price-inrange" class="form-label">Theo giá</label>
+                        <label for="sort-price-inrange" class="form-label">Khoảng giá</label>
                         <div class="input-group">
                             <span class="ct-input-group-text">Từ</span>
-                            <input type="text" class="form-control" name="price-from" placeholder="form"
+                            <input type="text" class="form-control" name="price-from" placeholder="From" value="${price_from}"
                                 aria-label="form">
                             <span class="ct-input-group-text ms-2">Đến</span>
-                            <input type="text" class="form-control" name="price-to" placeholder="to" aria-label="to">
+                            <input type="text" class="form-control" name="price-to" placeholder="To" value="${price_to}" aria-label="to">
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="sort-az" class="form-label">Theo tên</label>
+                        <label for="sort-az" class="form-label">Sắp xếp theo tên</label>
                         <select id="sort-az" class="form-select" aria-label="sort-az" name="sort-name">
-                            <option value="0" selected>Từ A->Z</option>
-                            <option value="1">Từ Z->A</option>
+                            <c:set var="val" value="${sort_name}"/>
+                            <c:choose> 
+                            <c:when test="${val == '1'}">
+                                <option value="0">Từ A->Z</option>
+                                <option value="1" selected>Từ Z->A</option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="0" selected>Từ A->Z</option>
+                                <option value="1">Từ Z->A</option>
+                            </c:otherwise>
+                            </c:choose>  
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="byname" class="form-label">Tìm theo tên</label>
-                        <input id="byname" type="text" class="form-control" name="byname">
+                        <input id="byname" type="text" class="form-control" name="byname" value="${name}">
                     </div>
-                    <div class="mb-3">
-                        <label for="byid" class="form-label">Tìm theo tên</label>
+                    <!-- <div class="mb-3">
+                        <label for="byid" class="form-label">Tìm theo id</label>
                         <input id="byid" type="text" class="form-control" name="byid">
-                    </div>
+                    </div> -->
                     <button class="ct-outline-button" style="--ct-color: blue">Lọc</button>
                 </form>
-            </div>
+            </div>  
             <div class="col-8">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-2">
                     <c:forEach var="flower" items="${flowers}">

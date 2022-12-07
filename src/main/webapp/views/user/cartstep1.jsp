@@ -45,27 +45,17 @@
                         </tr>
                     </thead>
                     <tbody class="text-center" style="vertical-align: middle;">
-                        <tr>
-                            <td><img class="ct-img" src="../../imgs/itemflower1.jpg" alt="" width="200"></td>
-                            <td>Flower 1</td>
-                            <td><input type="number" value="1" min="1" max="99" width="50"></td>
-                            <td>283.000 VND</td>
-                            <td><i class="fa-solid fa-trash-can text-danger ct-icon"></i></td>
-                        </tr>
-                        <tr>
-                            <td><img class="ct-img" src="../../imgs/itemflower1.jpg" alt="" width="200"></td>
-                            <td>Flower 1</td>
-                            <td><input type="number" value="1" min="1" max="99" width="50"></td>
-                            <td>283.000 VND</td>
-                            <td><i class="fa-solid fa-trash-can text-danger ct-icon"></i></td>
-                        </tr>
-                        <tr>
-                            <td><img class="ct-img" src="../../imgs/itemflower1.jpg" alt="" width="200"></td>
-                            <td>Flower 1</td>
-                            <td><input type="number" value="1" min="1" max="99" width="50"></td>
-                            <td>283.000 VND</td>
-                            <td><i class="fa-solid fa-trash-can text-danger ct-icon"></i></td>
-                        </tr>
+                        <c:forEach var="cart" items="${carts}">
+                            <tr>
+                                <input type="text" id="cart-id" value="${cart.getId()}">
+                                <input type="text" id="cart-status" value="${cart.getStatus()}">
+                                <td><img class="ct-img" src="../../images/${cart.getImageFlower()}" alt="" width="200"></td>
+                                <td>${cart.getNameFlower()}</td>
+                                <td><input type="number" value="${cart.getQuantityFlower()}" min="1" max="99" width="50" readonly></td>
+                                <td>${cart.getPriceFlower()}</td>
+                                <td><i class="fa-solid fa-trash-can text-danger ct-icon"></i></td>
+                            </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
             </div>
@@ -79,22 +69,22 @@
                     <tbody class="ct-table-body">
                       <tr>
                         <td>Tổng sản phẩm</td>
-                        <td>3</td>
+                        <td>${totalFlower}</td>
                       </tr>
                       <tr>
                         <td>Tổng tiền hàng</td>
-                        <td>849.000 <span>VND</span></td>
+                        <td>${total} <span>VND</span></td>
                       </tr>
                     </tbody>
                     <tfoot class="ct-table-footer">
                         <tr>
                             <td>Tạm tính</td>
-                            <td>849.000 <span>VND</span></td>
+                            <td>${total} <span>VND</span></td>
                         </tr>
                     </tfoot>
                   </table>
                   <a href="/" class="d-inline-block ct-btn-cart me-2" style="--ct-color: #0000ff">Tiếp tục mua hàng</a>
-                  <a href="/cart-step-2" class="d-inline-block ct-btn-cart me-2" style="--ct-color: #ff0000">Thanh toán</a>
+                  <a href="#" class="d-inline-block ct-btn-cart me-2" id="btn-pay-ct1" style="--ct-color: #ff0000">Thanh toán</a>
             </div>
         </div>
     </section>
@@ -102,6 +92,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
+    <script src="../../js/user/cartstep1.js"></script>
 </body>
 
 </html>
