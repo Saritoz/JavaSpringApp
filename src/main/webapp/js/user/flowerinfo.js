@@ -61,16 +61,36 @@ function subAmount() {
 }
 
 btn_order_now.addEventListener("click", () => {
-  var form = document.createElement("form");
+  const form = document.createElement("form");
   form.setAttribute("method", "post");
   form.setAttribute("action", "/cart/ordernow");
 
-  var FN = document.createElement("input");
+  const FN = document.createElement("input");
   FN.setAttribute("type", "text");
   FN.setAttribute("name", "flower-id");
   FN.setAttribute("value", flower_id.value);
   form.appendChild(FN);
-  var FN1 = document.createElement("input");
+  const FN1 = document.createElement("input");
+  FN1.setAttribute("type", "text");
+  FN1.setAttribute("name", "flower-amount");
+  FN1.setAttribute("value", amount.value);
+  form.appendChild(FN1);
+  document.getElementsByTagName("body")[0].appendChild(form);
+  form.submit();
+});
+
+btn_add_cart.addEventListener("click", () => {
+  console.log("click");
+  const form = document.createElement("form");
+  form.setAttribute("method", "post");
+  form.setAttribute("action", "/cart/add");
+
+  const FN = document.createElement("input");
+  FN.setAttribute("type", "text");
+  FN.setAttribute("name", "flower-id");
+  FN.setAttribute("value", flower_id.value);
+  form.appendChild(FN);
+  const FN1 = document.createElement("input");
   FN1.setAttribute("type", "text");
   FN1.setAttribute("name", "flower-amount");
   FN1.setAttribute("value", amount.value);

@@ -47,8 +47,6 @@
                     <tbody class="text-center" style="vertical-align: middle;">
                         <c:forEach var="cart" items="${carts}">
                             <tr>
-                                <input type="text" id="cart-id" value="${cart.getId()}">
-                                <input type="text" id="cart-status" value="${cart.getStatus()}">
                                 <td><img class="ct-img" src="../../images/${cart.getImageFlower()}" alt="" width="200"></td>
                                 <td>${cart.getNameFlower()}</td>
                                 <td><input type="number" value="${cart.getQuantityFlower()}" min="1" max="99" width="50" readonly></td>
@@ -67,6 +65,11 @@
                       </tr>
                     </thead>
                     <tbody class="ct-table-body">
+                        <input type="text" value="${totalFlower}" id="totalFlower" hidden>
+                        <input type="text" value="${total}" id="total" hidden>
+                        <input type="text" value="${cart_status}" id="cart-status" hidden>
+                        <input type="text" value="${id_flower}" id="id-flower" hidden>
+                        <input type="text" value="${name_flower}" id="name-flower" hidden>
                       <tr>
                         <td>Tổng sản phẩm</td>
                         <td>${totalFlower}</td>
@@ -88,7 +91,6 @@
             </div>
         </div>
     </section>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>

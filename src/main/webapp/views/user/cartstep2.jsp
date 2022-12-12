@@ -87,8 +87,9 @@
                     <tbody class="ct-table-body" style="vertical-align: middle;">
                         <c:forEach var="cart" items="${carts}">
                         <tr>
-                            <input type="text" id="cart-id" value="${cart.getId()}">
-                            <input type="text" id="cart-status" value="${cart.getStatus()}">
+                            <input type="text" id="cart-status" value="${cart.getStatus()}" hidden>
+                            <input type="text" id="quantity-flower" value="${cart.getQuantityFlower()}" hidden>
+                            <input type="text" id="id-flower" value="${cart.getIdFlower()}" hidden>
                             <td>${cart.getNameFlower()}</td>
                             <td>${cart.getQuantityFlower()}</td>
                             <td>${cart.getTotal()} VND</td>
@@ -99,6 +100,7 @@
                         <tr>
                             <th colspan="2">Tạm tính</th>
                             <th>${total} VND</th>
+                            <input type="text" id="cart-total" value="${total}" hidden>
                         </tr>
                     </tfoot>
                 </table>

@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "orderflower")
-public class Order {
+public class OrderF {
     @Id
     @Column(name = "id")
     private int id;
@@ -33,17 +33,14 @@ public class Order {
     private String payment;
     @Column(name = "priceShipment")
     private int priceShipment;
-    @Column(name = "totalFlower")
-    private int totalFlower;
     @Column(name = "total")
     private int total;
 
-    public Order() {
+    public OrderF() {
     }
 
-    public Order(int id, String fullname, String email, String phonenumber, String address, String username,
-            String idFlower, String quantityFlower, String status, String shipment, String payment, int priceShipment,
-            int totalFlower, int total) {
+    public OrderF(int id, String fullname, String email, String phonenumber, String address, String username,
+            String idFlower, String quantityFlower, String status, String shipment, String payment, int priceShipment, int total) {
         this.id = id;
         this.fullname = fullname;
         this.email = email;
@@ -56,7 +53,6 @@ public class Order {
         this.shipment = shipment;
         this.payment = payment;
         this.priceShipment = priceShipment;
-        this.totalFlower = totalFlower;
         this.total = total;
     }
 
@@ -154,14 +150,6 @@ public class Order {
 
     public void setPriceShipment(int priceShipment) {
         this.priceShipment = priceShipment;
-    }
-
-    public int getTotalFlower() {
-        return totalFlower;
-    }
-
-    public void setTotalFlower(int totalFlower) {
-        this.totalFlower = totalFlower;
     }
 
     public int getTotal() {

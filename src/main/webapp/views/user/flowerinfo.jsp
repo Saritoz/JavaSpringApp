@@ -72,7 +72,7 @@
                             <button class="fa-solid fa-plus text-gray ct-btn-amount" onclick="addAmount()"></button>
                         </div>
                         <a href="#" id="btn-order-now-info" class="ct-btn me-4" style="--ct-color: #ffa500">Đặt hàng ngay</a>
-                        <a href="" id="btn-add-cart-info" class="ct-btn" style="--ct-color: #ffd400">Thêm vào giỏ</a>
+                        <a href="#" id="btn-add-cart-info" class="ct-btn" style="--ct-color: #ffd400">Thêm vào giỏ</a>
                     </div>
                     <div class="tab-pane fade" id="desc" role="tabpanel" aria-labelledby="desc-tab">
                         <p class="mt-2 text-justify text-gray">

@@ -1,19 +1,53 @@
-var btn_pay_ct2 = document.querySelector("#btn-ct2");
-var cart_id = document.querySelector("#cart-id");
-var cart_status = document.querySelector("#cart-status");
-var form_ct2 = document.querySelector("#form-ct2");
+const btn_pay_ct2 = document.querySelector("#btn-ct2");
+const cart_total = document.querySelector("#cart-total");
+const cart_status = document.querySelector("#cart-status");
+const quantity_flower = document.querySelector("#quantity-flower");
+const id_flower = document.querySelector("#id-flower");
+const fullname = document.querySelector("#fullname");
+const email = document.querySelector("#email");
+const pnumber = document.querySelector("#pnumber");
+const address = document.querySelector("#address");
+const form_ct2 = document.querySelector("#form-ct2");
 
 btn_pay_ct2.addEventListener("click", () => {
-  if (cart_status.value == "ordernow") {
-    form_ct2.setAttribute("action", "/cart-step-3/ordernow");
-    var FN = document.createElement("input");
-    FN.setAttribute("type", "text");
-    FN.setAttribute("name", "cart-id");
-    FN.setAttribute("value", cart_id.value);
-    form_ct2.appendChild(FN);
-    form_ct2.submit();
-  } else {
-    form_ct2.setAttribute("action", "/cart-step-3");
-    form.submit();
+  if (
+    fullname.value != "" &&
+    email.value != "" &&
+    email.value.includes("@") &&
+    pnumber.value != "" &&
+    address.value != ""
+  ) {
+    if (cart_status.value == "ordernow") {
+      form_ct2.setAttribute("action", "/cart-step-3/ordernow");
+      const FN = document.createElement("input");
+      FN.setAttribute("type", "text");
+      FN.setAttribute("name", "total");
+      FN.setAttribute("value", cart_total.value);
+      form_ct2.appendChild(FN);
+      const FN1 = document.createElement("input");
+      FN1.setAttribute("type", "text");
+      FN1.setAttribute("name", "cart-status");
+      FN1.setAttribute("value", cart_status.value);
+      form_ct2.appendChild(FN1);
+      const FN2 = document.createElement("input");
+      FN2.setAttribute("type", "text");
+      FN2.setAttribute("name", "quantity-flower");
+      FN2.setAttribute("value", quantity_flower.value);
+      form_ct2.appendChild(FN2);
+      const FN3 = document.createElement("input");
+      FN3.setAttribute("type", "text");
+      FN3.setAttribute("name", "id-flower");
+      FN3.setAttribute("value", id_flower.value);
+      form_ct2.appendChild(FN3);
+      form_ct2.submit();
+    } else {
+      form_ct2.setAttribute("action", "/cart-step-3");
+      const FN = document.createElement("input");
+      FN.setAttribute("type", "text");
+      FN.setAttribute("name", "total");
+      FN.setAttribute("value", cart_total.value);
+      form_ct2.appendChild(FN);
+      form.submit();
+    }
   }
 });

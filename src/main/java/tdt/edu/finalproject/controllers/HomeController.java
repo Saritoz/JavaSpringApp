@@ -3,7 +3,6 @@ package tdt.edu.finalproject.controllers;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,13 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ch.qos.logback.core.joran.conditional.ElseAction;
 import tdt.edu.finalproject.models.Account;
 import tdt.edu.finalproject.models.Cart;
 import tdt.edu.finalproject.models.Flower;
+import tdt.edu.finalproject.models.OrderF;
 import tdt.edu.finalproject.repositories.AccountRepository;
 import tdt.edu.finalproject.repositories.CartRepository;
 import tdt.edu.finalproject.repositories.FlowerRepository;
+import tdt.edu.finalproject.repositories.OrderRepository;
 
 @Controller
 @RequestMapping("/")
@@ -34,6 +34,9 @@ public class HomeController {
 
     @Autowired
     private CartRepository cartRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     private HashPassword hashPassword = new HashPassword();
 
@@ -199,14 +202,62 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
-    public String getCart() {
+    public String getCart(ModelMap modelMap) {
+        Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
+        int quantity_flower = 0;
+        int total = 0;
+        List<Integer> list_id = new ArrayList<>();
+        List<String> list_name = new ArrayList<>();
+        for (Cart cart : carts) {
+            quantity_flower += cart.getQuantityFlower();
+            total += cart.getTotal();
+            list_id.add(cart.getIdFlower());
+            list_name.add(cart.getNameFlower());
+        }
+        modelMap.addAttribute("carts", carts);
+        modelMap.addAttribute("totalFlower", quantity_flower);
+        modelMap.addAttribute("total", total);
         return "/user/cartstep1";
     }
 
-    // @RequestMapping(value = "/cart", method = RequestMethod.GET)
-    // public String getCart() {
-    // return "/user/cartstep1";
-    // }
+    @RequestMapping(value = "/cart/add", method = RequestMethod.POST)
+    public String postAddCart(ModelMap modelMap, @RequestParam("flower-id") int flower_id,
+            @RequestParam("flower-amount") int flower_amount) {
+
+        Iterable<Flower> flowers = flowerRepository.findFlowerById(flower_id);
+        int total = 0;
+        String name = "";
+        String image = "";
+        int price = 0;
+        for (Flower flower : flowers) {
+            total = flower.getPrice() * flower_amount;
+            name = flower.getName();
+            image = flower.getImage1();
+            price = flower.getPrice();
+        }
+
+        Iterable<Cart> carts = cartRepository.findCartByIdFlower(flower_id);
+        for (Cart cart : carts) {
+            if (cart.getIdFlower() == flower_id) {
+                if (cart.getStatus().equals("add_cart")) {
+                    flower_amount += cart.getQuantityFlower();
+                    total += cart.getTotal();
+                    Cart cart1 = new Cart(cart.getId(), flower_id, name, flower_amount, price, image, "lnkhanhduy",
+                            "add_cart", total);
+                    cartRepository.save(cart1);
+                    Iterable<Flower> flowers1 = flowerRepository.findAll();
+                    modelMap.addAttribute("flowers", flowers1);
+                    return "/user/flowerlist";
+                }
+            }
+        }
+
+        Cart cart = new Cart(0, flower_id, name, flower_amount, price, image, "lnkhanhduy", "add_cart", total);
+        cartRepository.save(cart);
+        Iterable<Flower> flowers1 = flowerRepository.findAll();
+        modelMap.addAttribute("flowers", flowers1);
+        return "/user/flowerlist";
+    }
 
     @RequestMapping(value = "/cart/ordernow", method = RequestMethod.POST)
     public String postCart(ModelMap modelMap, @RequestParam("flower-id") int flower_id,
@@ -216,20 +267,21 @@ public class HomeController {
         String name = "";
         String image = "";
         int price = 0;
-        int totalFlower = 0;
         for (Flower flower : flowers) {
             total = flower.getPrice() * flower_amount;
             name = flower.getName();
             image = flower.getImage1();
-            price = flower.getPrice() * flower_amount;
+            price = flower.getPrice();
         }
+        List<Cart> carts = new ArrayList<>();
         Cart cart = new Cart(0, flower_id, name, flower_amount, price, image, "lnkhanhduy", "ordernow", total);
-        cartRepository.save(cart);
-
-        Iterable<Cart> carts = cartRepository.findCartByStatus("ordernow");
+        carts.add(cart);
 
         modelMap.addAttribute("carts", carts);
         modelMap.addAttribute("totalFlower", flower_amount);
+        modelMap.addAttribute("cart_status", "ordernow");
+        modelMap.addAttribute("id_flower", flower_id);
+        modelMap.addAttribute("name_flower", name);
         modelMap.addAttribute("total", total);
         return "/user/cartstep1";
     }
@@ -240,17 +292,25 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/cart-step-2", method = RequestMethod.POST)
-    public String postFillInfo() {
+    public String postFillInfo(ModelMap modelMap, @RequestParam("total") String total,
+            @RequestParam("quantity-flower") String quantity_flower, @RequestParam("id-flower") String id_flower,
+            @RequestParam("name-flower") String name_flower) {
+
+        Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
+        modelMap.addAttribute("carts", carts);
+        modelMap.addAttribute("total", total);
         return "/user/cartstep2";
     }
 
     @RequestMapping(value = "/cart-step-2/ordernow", method = RequestMethod.POST)
-    public String postCartStep2Ordernow(ModelMap modelMap, @RequestParam("cart-id") int cart_id) {
-        Iterable<Cart> carts = cartRepository.findCartById(cart_id);
-        int total = 0;
-        for (Cart cart : carts) {
-            total = cart.getTotal();
-        }
+    public String postCartStep2Ordernow(ModelMap modelMap, @RequestParam("quantity-flower") String quantity_flower,
+            @RequestParam("cart-status") String cart_status, @RequestParam("id-flower") int id_flower,
+            @RequestParam("total") String total, @RequestParam("name-flower") String name_flower) {
+        List<Cart> carts = new ArrayList<>();
+        Cart cart = new Cart(0, id_flower, name_flower, Integer.parseInt(quantity_flower), 0, "", "lnkhanhduy",
+                "ordernow",
+                Integer.parseInt(total));
+        carts.add(cart);
         modelMap.addAttribute("total", total);
         modelMap.addAttribute("carts", carts);
         return "/user/cartstep2";
@@ -264,27 +324,83 @@ public class HomeController {
     @RequestMapping(value = "/cart-step-3", method = RequestMethod.POST)
     public String postPayment(ModelMap modelMap, @RequestParam("fullname") String fullname,
             @RequestParam("pnumber") String pnumber, @RequestParam("email") String email,
-            @RequestParam("address") String address) {
-
+            @RequestParam("address") String address, @RequestParam("total") String total) {
+        modelMap.addAttribute("total", total);
+        modelMap.addAttribute("fullname", fullname);
+        modelMap.addAttribute("pnumber", pnumber);
+        modelMap.addAttribute("email", email);
+        modelMap.addAttribute("address", address);
         return "/user/cartstep3";
     }
 
     @RequestMapping(value = "/cart-step-3/ordernow", method = RequestMethod.POST)
     public String postPaymentOrdernow(ModelMap modelMap, @RequestParam("fullname") String fullname,
             @RequestParam("pnumber") String pnumber, @RequestParam("email") String email,
-            @RequestParam("address") String address, @RequestParam("cart-id") int cart_id) {
-        Iterable<Cart> carts = cartRepository.findCartById(cart_id);
-        int total = 0;
-        for (Cart cart : carts) {
-            total = cart.getTotal();
-        }
+            @RequestParam("address") String address, @RequestParam("cart-status") String cart_status,
+            @RequestParam("total") String total, @RequestParam("quantity-flower") String quantity_flower,
+            @RequestParam("id-flower") String id_flower) {
+
         modelMap.addAttribute("total", total);
+        modelMap.addAttribute("cart_status", cart_status);
+        modelMap.addAttribute("quantity_flower", quantity_flower);
+        modelMap.addAttribute("id_flower", id_flower);
         modelMap.addAttribute("fullname", fullname);
         modelMap.addAttribute("pnumber", pnumber);
         modelMap.addAttribute("email", email);
         modelMap.addAttribute("address", address);
-        modelMap.addAttribute("cart-id", cart_id);
         return "/user/cartstep3";
+    }
+
+    @RequestMapping(value = "/cart-step-4/ordernow", method = RequestMethod.POST)
+    public String postCompleteNow(ModelMap modelMap, @RequestParam("fullname") String fullname,
+            @RequestParam("pnumber") String pnumber, @RequestParam("email") String email,
+            @RequestParam("address") String address,
+            @RequestParam("shipment") String shipment, @RequestParam("payment") String payment,
+            @RequestParam("id-flower") String id_flower, @RequestParam("quantity-flower") String quantity_flower,
+            @RequestParam("total") String total) {
+        int priceShipment = 0;
+        if (shipment.equals("normal")) {
+            priceShipment = 30000;
+        } else {
+            priceShipment = 50000;
+        }
+        int totalOrder = Integer.parseInt(total) + priceShipment;
+
+        OrderF order = new OrderF(0, fullname, email,
+                pnumber, address, "lnkhanhduy", id_flower,
+                quantity_flower, "Chờ xác nhận", shipment, "COD", priceShipment,
+                totalOrder);
+        orderRepository.save(order);
+        return "/user/index";
+    }
+
+    @RequestMapping(value = "/cart-step-4", method = RequestMethod.POST)
+    public String postComplete(ModelMap modelMap, @RequestParam("fullname") String fullname,
+            @RequestParam("pnumber") String pnumber, @RequestParam("email") String email,
+            @RequestParam("address") String address,
+            @RequestParam("shipment") String shipment, @RequestParam("payment") String payment,
+            @RequestParam("total") String total) {
+        int priceShipment = 0;
+        if (shipment.equals("normal")) {
+            priceShipment = 30000;
+        } else {
+            priceShipment = 50000;
+        }
+        int totalOrder = Integer.parseInt(total) + priceShipment;
+        List<Integer> list_id = new ArrayList<>();
+        List<Integer> list_quantity = new ArrayList<>();
+        Iterable<Cart> carts = cartRepository.findCartByUsername("lnkhanhduy");
+        for (Cart cart : carts) {
+            list_id.add(cart.getIdFlower());
+            list_quantity.add(cart.getQuantityFlower());
+            cartRepository.saveCart(cart.getId());
+        }
+        OrderF order = new OrderF(0, fullname, email,
+                pnumber, address, "lnkhanhduy", list_id.toString(),
+                list_quantity.toString(), "Chờ xác nhận", shipment, "COD", priceShipment,
+                totalOrder);
+        orderRepository.save(order);
+        return "/user/index";
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
