@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class OrderF {
     @Id
     @Column(name = "id")
-    private int id;
+    private String id;
     @Column(name = "fullname")
     private String fullname;
     @Column(name = "email")
@@ -22,9 +22,9 @@ public class OrderF {
     @Column(name = "username")
     private String username;
     @Column(name = "idFlower")
-    private String idFlower;
+    private int idFlower;
     @Column(name = "quantityFlower")
-    private String quantityFlower;
+    private int quantityFlower;
     @Column(name = "status")
     private String status;
     @Column(name = "shipment")
@@ -35,12 +35,15 @@ public class OrderF {
     private int priceShipment;
     @Column(name = "total")
     private int total;
+    @Column(name = "timeOrder")
+    private String timeOrder;
 
     public OrderF() {
     }
 
-    public OrderF(int id, String fullname, String email, String phonenumber, String address, String username,
-            String idFlower, String quantityFlower, String status, String shipment, String payment, int priceShipment, int total) {
+    public OrderF(String id, String fullname, String email, String phonenumber, String address, String username,
+            int idFlower, int quantityFlower, String status, String shipment, String payment, int priceShipment,
+            int total, String timeOrder) {
         this.id = id;
         this.fullname = fullname;
         this.email = email;
@@ -54,13 +57,14 @@ public class OrderF {
         this.payment = payment;
         this.priceShipment = priceShipment;
         this.total = total;
+        this.timeOrder = timeOrder;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -104,19 +108,19 @@ public class OrderF {
         this.username = username;
     }
 
-    public String getIdFlower() {
+    public int getIdFlower() {
         return idFlower;
     }
 
-    public void setIdFlower(String idFlower) {
+    public void setIdFlower(int idFlower) {
         this.idFlower = idFlower;
     }
 
-    public String getQuantityFlower() {
+    public int getQuantityFlower() {
         return quantityFlower;
     }
 
-    public void setQuantityFlower(String quantityFlower) {
+    public void setQuantityFlower(int quantityFlower) {
         this.quantityFlower = quantityFlower;
     }
 
@@ -158,5 +162,13 @@ public class OrderF {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public String getTimeOrder() {
+        return timeOrder;
+    }
+
+    public void setTimeOrder(String timeOrder) {
+        this.timeOrder = timeOrder;
     }
 }

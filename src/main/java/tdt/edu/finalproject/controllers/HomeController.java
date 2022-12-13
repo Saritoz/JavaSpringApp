@@ -2,6 +2,8 @@ package tdt.edu.finalproject.controllers;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -365,11 +367,13 @@ public class HomeController {
             priceShipment = 50000;
         }
         int totalOrder = Integer.parseInt(total) + priceShipment;
-
-        OrderF order = new OrderF(0, fullname, email,
-                pnumber, address, "lnkhanhduy", id_flower,
-                quantity_flower, "Chờ xác nhận", shipment, "COD", priceShipment,
-                totalOrder);
+        String id_random = hashPassword.RandomId(10);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+        OrderF order = new OrderF(id_random, fullname, email,
+                pnumber, address, "lnkhanhduy", Integer.parseInt(id_flower),
+                Integer.parseInt(quantity_flower), "Chờ xác nhận", shipment, "COD", priceShipment,
+                totalOrder, dtf.format(now).toString());
         orderRepository.save(order);
         return "/user/index";
     }
@@ -387,24 +391,28 @@ public class HomeController {
             priceShipment = 50000;
         }
         int totalOrder = Integer.parseInt(total) + priceShipment;
-        List<Integer> list_id = new ArrayList<>();
-        List<Integer> list_quantity = new ArrayList<>();
         Iterable<Cart> carts = cartRepository.findCartByUsername("lnkhanhduy");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+        String id_random = hashPassword.RandomId(10);
         for (Cart cart : carts) {
-            list_id.add(cart.getIdFlower());
-            list_quantity.add(cart.getQuantityFlower());
-            cartRepository.saveCart(cart.getId());
+            OrderF order = new OrderF(id_random, fullname, email,
+                    pnumber, address, "lnkhanhduy", cart.getIdFlower(),
+                    cart.getQuantityFlower(), "Chờ xác nhận", shipment, "COD", priceShipment,
+                    totalOrder, dtf.format(now).toString());
+            orderRepository.save(order);
         }
-        OrderF order = new OrderF(0, fullname, email,
-                pnumber, address, "lnkhanhduy", list_id.toString(),
-                list_quantity.toString(), "Chờ xác nhận", shipment, "COD", priceShipment,
-                totalOrder);
-        orderRepository.save(order);
+
         return "/user/index";
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String getProfile() {
+    public String getProfile(ModelMap modelMap) {
+        Iterable<Account> accounts = accountRepository.findAccountByUsername("lnkhanhduy");
+        for (Account account : accounts) {
+            System.out.println(account.getFullname());
+        }
+        modelMap.addAttribute("accounts", accounts);
         return "/user/profile";
     }
 }
