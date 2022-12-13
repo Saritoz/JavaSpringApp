@@ -10,7 +10,9 @@ import javax.persistence.Table;
 public class OrderF {
     @Id
     @Column(name = "id")
-    private String id;
+    private int id;
+    @Column(name = "idOrder")
+    private String idOrder;
     @Column(name = "fullname")
     private String fullname;
     @Column(name = "email")
@@ -41,10 +43,11 @@ public class OrderF {
     public OrderF() {
     }
 
-    public OrderF(String id, String fullname, String email, String phonenumber, String address, String username,
-            int idFlower, int quantityFlower, String status, String shipment, String payment, int priceShipment,
-            int total, String timeOrder) {
+    public OrderF(int id, String idOrder, String fullname, String email, String phonenumber, String address,
+            String username, int idFlower, int quantityFlower, String status, String shipment, String payment,
+            int priceShipment, int total, String timeOrder) {
         this.id = id;
+        this.idOrder = idOrder;
         this.fullname = fullname;
         this.email = email;
         this.phonenumber = phonenumber;
@@ -60,12 +63,20 @@ public class OrderF {
         this.timeOrder = timeOrder;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public String getIdOrder() {
+        return idOrder;
+    }
+
+    public void setIdOrder(String idOrder) {
+        this.idOrder = idOrder;
     }
 
     public String getFullname() {
@@ -171,4 +182,15 @@ public class OrderF {
     public void setTimeOrder(String timeOrder) {
         this.timeOrder = timeOrder;
     }
+
+    @Override
+    public String toString() {
+        return "OrderF [id=" + id + ", idOrder=" + idOrder + ", fullname=" + fullname + ", email=" + email
+                + ", phonenumber=" + phonenumber + ", address=" + address + ", username=" + username + ", idFlower="
+                + idFlower + ", quantityFlower=" + quantityFlower + ", status=" + status + ", shipment=" + shipment
+                + ", payment=" + payment + ", priceShipment=" + priceShipment + ", total=" + total + ", timeOrder="
+                + timeOrder + "]";
+    }
+
+    
 }

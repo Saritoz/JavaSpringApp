@@ -370,7 +370,7 @@ public class HomeController {
         String id_random = hashPassword.RandomId(10);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
-        OrderF order = new OrderF(id_random, fullname, email,
+        OrderF order = new OrderF(0, id_random, fullname, email,
                 pnumber, address, "lnkhanhduy", Integer.parseInt(id_flower),
                 Integer.parseInt(quantity_flower), "Chờ xác nhận", shipment, "COD", priceShipment,
                 totalOrder, dtf.format(now).toString());
@@ -391,16 +391,24 @@ public class HomeController {
             priceShipment = 50000;
         }
         int totalOrder = Integer.parseInt(total) + priceShipment;
-        Iterable<Cart> carts = cartRepository.findCartByUsername("lnkhanhduy");
+        Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
         String id_random = hashPassword.RandomId(10);
+        List<OrderF> orders = new ArrayList<>();
+        int id = 0;
         for (Cart cart : carts) {
-            OrderF order = new OrderF(id_random, fullname, email,
+            OrderF order = new OrderF(id, id_random, fullname, email,
                     pnumber, address, "lnkhanhduy", cart.getIdFlower(),
                     cart.getQuantityFlower(), "Chờ xác nhận", shipment, "COD", priceShipment,
                     totalOrder, dtf.format(now).toString());
+            orders.add(order);
             orderRepository.save(order);
+            id++;
+        }
+
+        for (OrderF orderF : orders) {
+            System.out.println(orderF.toString());
         }
 
         return "/user/index";
