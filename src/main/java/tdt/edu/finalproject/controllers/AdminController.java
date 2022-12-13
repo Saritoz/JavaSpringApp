@@ -160,11 +160,11 @@ public class AdminController {
                     (imageStrings.size()) > 3 ? (imageStrings.get(3)) : null,
                     (imageStrings.size()) > 4 ? (imageStrings.get(4)) : null);
             flowerRepository.save(flower);
-            }catch (Exception e) {
-                // TODO: handle exception
-                e.printStackTrace();
-            }
-    
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+
         Iterable<Flower> flowers = flowerRepository.findAll();
         modelMap.addAttribute("flowers", flowers);
         modelMap.addAttribute("message", "Sửa sản phẩm thành công!");
