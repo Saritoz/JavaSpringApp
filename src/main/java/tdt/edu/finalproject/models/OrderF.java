@@ -25,8 +25,12 @@ public class OrderF {
     private String username;
     @Column(name = "idFlower")
     private int idFlower;
+    @Column(name = "nameFlower")
+    private String nameFlower;
     @Column(name = "quantityFlower")
     private int quantityFlower;
+    @Column(name = "totalPriceFlower")
+    private int totalPriceFlower;
     @Column(name = "status")
     private String status;
     @Column(name = "shipment")
@@ -44,8 +48,8 @@ public class OrderF {
     }
 
     public OrderF(int id, String idOrder, String fullname, String email, String phonenumber, String address,
-            String username, int idFlower, int quantityFlower, String status, String shipment, String payment,
-            int priceShipment, int total, String timeOrder) {
+            String username, int idFlower, String nameFlower, int quantityFlower, int totalPriceFlower, String status,
+            String shipment, String payment, int priceShipment, int total, String timeOrder) {
         this.id = id;
         this.idOrder = idOrder;
         this.fullname = fullname;
@@ -54,7 +58,9 @@ public class OrderF {
         this.address = address;
         this.username = username;
         this.idFlower = idFlower;
+        this.nameFlower = nameFlower;
         this.quantityFlower = quantityFlower;
+        this.totalPriceFlower = totalPriceFlower;
         this.status = status;
         this.shipment = shipment;
         this.payment = payment;
@@ -127,12 +133,28 @@ public class OrderF {
         this.idFlower = idFlower;
     }
 
+    public String getNameFlower() {
+        return nameFlower;
+    }
+
+    public void setNameFlower(String nameFlower) {
+        this.nameFlower = nameFlower;
+    }
+
     public int getQuantityFlower() {
         return quantityFlower;
     }
 
     public void setQuantityFlower(int quantityFlower) {
         this.quantityFlower = quantityFlower;
+    }
+
+    public int getTotalPriceFlower() {
+        return totalPriceFlower;
+    }
+
+    public void setTotalPriceFlower(int totalPriceFlower) {
+        this.totalPriceFlower = totalPriceFlower;
     }
 
     public String getStatus() {
@@ -182,15 +204,4 @@ public class OrderF {
     public void setTimeOrder(String timeOrder) {
         this.timeOrder = timeOrder;
     }
-
-    @Override
-    public String toString() {
-        return "OrderF [id=" + id + ", idOrder=" + idOrder + ", fullname=" + fullname + ", email=" + email
-                + ", phonenumber=" + phonenumber + ", address=" + address + ", username=" + username + ", idFlower="
-                + idFlower + ", quantityFlower=" + quantityFlower + ", status=" + status + ", shipment=" + shipment
-                + ", payment=" + payment + ", priceShipment=" + priceShipment + ", total=" + total + ", timeOrder="
-                + timeOrder + "]";
-    }
-
-    
 }

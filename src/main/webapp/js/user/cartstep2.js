@@ -2,6 +2,7 @@ const btn_pay_ct2 = document.querySelector("#btn-ct2");
 const cart_total = document.querySelector("#cart-total");
 const cart_status = document.querySelector("#cart-status");
 const quantity_flower = document.querySelector("#quantity-flower");
+const name_flower = document.querySelector("#name-flower");
 const id_flower = document.querySelector("#id-flower");
 const fullname = document.querySelector("#fullname");
 const email = document.querySelector("#email");
@@ -39,6 +40,11 @@ btn_pay_ct2.addEventListener("click", () => {
       FN3.setAttribute("name", "id-flower");
       FN3.setAttribute("value", id_flower.value);
       form_ct2.appendChild(FN3);
+      const FN4 = document.createElement("input");
+      FN4.setAttribute("type", "text");
+      FN4.setAttribute("name", "name-flower");
+      FN4.setAttribute("value", name_flower.value);
+      form_ct2.appendChild(FN4);
       form_ct2.submit();
     } else {
       form_ct2.setAttribute("action", "/cart-step-3");

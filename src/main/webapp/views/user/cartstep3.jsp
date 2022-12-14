@@ -74,6 +74,7 @@
                     <input type="text" name="email" value="${email}" hidden>
                     <input type="text" name="address" value="${address}" hidden>
                     <input type="text" name="total" value="${total}" hidden>
+                    <input type="text" name="name-flower" value="${name_flower}" hidden>
                 </form>
             </div>
             <div class="col-12 col-lg-4">

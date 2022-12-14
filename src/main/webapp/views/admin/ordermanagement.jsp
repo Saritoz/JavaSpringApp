@@ -1,4 +1,6 @@
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <div class="m-5">
     <table class="table table-hover">
         <thead class="text-center">
@@ -10,12 +12,14 @@
             </tr>
         </thead>
         <tbody class="text-center">
-            <tr onclick="openOrderInfoModal(event)">
-                <td>325482</td>
-                <td>1.525.000 VND</td>
-                <td>Fast Delivery</td>
-                <td>Waiting</td>
-            </tr>
+            <c:forEach var="order" items="${ordersGroupBy}">
+                <tr onclick="openOrderInfoModal(this)" data-id="${order.getIdOrder()}" data-total="${order.getTotal()}" data-shipment="${order.getShipment()}" data-status="${order.getStatus()}" data-fullname="${order.getFullname()}" data-pnumber="${order.getPhonenumber()}" data-email="${order.getEmail()}" data-address="${order.getAddress()}">
+                    <td>${order.getIdOrder()}</td>
+                    <td>${order.getTotal()}</td>
+                    <td>${order.getShipment()}</td>
+                    <td>${order.getStatus()}</td>
+                </tr>
+            </c:forEach>    
         </tbody>
     </table>
 </div>
@@ -57,31 +61,8 @@
                                     <th>Total Price</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-center">
-                                <tr>
-                                    <td>3512</td>
-                                    <td>Sun Flower</td>
-                                    <td>5</td>
-                                    <td>375.000vnd</td>
-                                </tr>
-                                <tr>
-                                    <td>1257</td>
-                                    <td>Cactus Flower</td>
-                                    <td>2</td>
-                                    <td>625.000vnd</td>
-                                </tr>
-                                <tr>
-                                    <td>2451</td>
-                                    <td>Gold Flower</td>
-                                    <td>5</td>
-                                    <td>625.000vnd</td>
-                                </tr>
-                                <tr>
-                                    <td>375</td>
-                                    <td>Four-leaf clover</td>
-                                    <td>2</td>
-                                    <td>115.000vnd</td>
-                                </tr>
+                            <tbody class="text-center" id="tbody-order">
+
                             </tbody>
                         </table>
                     </div>
@@ -105,13 +86,12 @@
             </div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-outline-danger" value="Cancel" data-bs-dismiss="modal">
-                <input type="button" class="btn btn-outline-primary" value="Delivery" data-bs-dismiss="modal">
-                <input type="button" class="btn btn-outline-success" value="Success" data-bs-dismiss="modal">
-                <input type="button" class="btn btn-outline-warning" value="Deny" data-bs-dismiss="modal">
+                <input id="btn-delivery" type="button" class="btn btn-outline-primary" value="Delivery" data-bs-dismiss="modal">
+                <input id="btn-success" type="button" class="btn btn-outline-success" value="Success" data-bs-dismiss="modal">
+                <input id="btn-deny" type="button" class="btn btn-outline-warning" value="Deny" data-bs-dismiss="modal">
             </div>
         </div>
     </div>
 </div>
-
 <script src="../../js/admin/ordermanagement.js"></script>
 <script src="../../js/formvalidation.js"></script>

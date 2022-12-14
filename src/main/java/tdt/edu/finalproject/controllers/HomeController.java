@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.criteria.Order;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -225,7 +227,6 @@ public class HomeController {
     @RequestMapping(value = "/cart/add", method = RequestMethod.POST)
     public String postAddCart(ModelMap modelMap, @RequestParam("flower-id") int flower_id,
             @RequestParam("flower-amount") int flower_amount) {
-
         Iterable<Flower> flowers = flowerRepository.findFlowerById(flower_id);
         int total = 0;
         String name = "";
@@ -241,11 +242,11 @@ public class HomeController {
         Iterable<Cart> carts = cartRepository.findCartByIdFlower(flower_id);
         for (Cart cart : carts) {
             if (cart.getIdFlower() == flower_id) {
-                if (cart.getStatus().equals("add_cart")) {
+                if (cart.getStatus().equals("Thêm vào giỏ")) {
                     flower_amount += cart.getQuantityFlower();
                     total += cart.getTotal();
                     Cart cart1 = new Cart(cart.getId(), flower_id, name, flower_amount, price, image, "lnkhanhduy",
-                            "add_cart", total);
+                            "Thêm vào giỏ", total);
                     cartRepository.save(cart1);
                     Iterable<Flower> flowers1 = flowerRepository.findAll();
                     modelMap.addAttribute("flowers", flowers1);
@@ -254,7 +255,7 @@ public class HomeController {
             }
         }
 
-        Cart cart = new Cart(0, flower_id, name, flower_amount, price, image, "lnkhanhduy", "add_cart", total);
+        Cart cart = new Cart(0, flower_id, name, flower_amount, price, image, "lnkhanhduy", "Thêm vào giỏ", total);
         cartRepository.save(cart);
         Iterable<Flower> flowers1 = flowerRepository.findAll();
         modelMap.addAttribute("flowers", flowers1);
@@ -297,7 +298,6 @@ public class HomeController {
     public String postFillInfo(ModelMap modelMap, @RequestParam("total") String total,
             @RequestParam("quantity-flower") String quantity_flower, @RequestParam("id-flower") String id_flower,
             @RequestParam("name-flower") String name_flower) {
-
         Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
         modelMap.addAttribute("carts", carts);
         modelMap.addAttribute("total", total);
@@ -340,7 +340,7 @@ public class HomeController {
             @RequestParam("pnumber") String pnumber, @RequestParam("email") String email,
             @RequestParam("address") String address, @RequestParam("cart-status") String cart_status,
             @RequestParam("total") String total, @RequestParam("quantity-flower") String quantity_flower,
-            @RequestParam("id-flower") String id_flower) {
+            @RequestParam("id-flower") String id_flower, @RequestParam("name-flower") String name_flower) {
 
         modelMap.addAttribute("total", total);
         modelMap.addAttribute("cart_status", cart_status);
@@ -350,6 +350,8 @@ public class HomeController {
         modelMap.addAttribute("pnumber", pnumber);
         modelMap.addAttribute("email", email);
         modelMap.addAttribute("address", address);
+        modelMap.addAttribute("name_flower", name_flower);
+
         return "/user/cartstep3";
     }
 
@@ -359,20 +361,24 @@ public class HomeController {
             @RequestParam("address") String address,
             @RequestParam("shipment") String shipment, @RequestParam("payment") String payment,
             @RequestParam("id-flower") String id_flower, @RequestParam("quantity-flower") String quantity_flower,
-            @RequestParam("total") String total) {
+            @RequestParam("total") String total, @RequestParam("name-flower") String name_flower) {
         int priceShipment = 0;
+        String shipmetString = "";
         if (shipment.equals("normal")) {
             priceShipment = 30000;
+            shipmetString = "Thường";
         } else {
-            priceShipment = 50000;
+            priceShipment = 60000;
+            shipmetString = "Hoả tốc";
         }
         int totalOrder = Integer.parseInt(total) + priceShipment;
         String id_random = hashPassword.RandomId(10);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
         OrderF order = new OrderF(0, id_random, fullname, email,
-                pnumber, address, "lnkhanhduy", Integer.parseInt(id_flower),
-                Integer.parseInt(quantity_flower), "Chờ xác nhận", shipment, "COD", priceShipment,
+                pnumber, address, "lnkhanhduy", Integer.parseInt(id_flower), name_flower,
+                Integer.parseInt(quantity_flower), Integer.parseInt(total), "Chờ xác nhận", shipmetString, "COD",
+                priceShipment,
                 totalOrder, dtf.format(now).toString());
         orderRepository.save(order);
         return "/user/index";
@@ -385,30 +391,37 @@ public class HomeController {
             @RequestParam("shipment") String shipment, @RequestParam("payment") String payment,
             @RequestParam("total") String total) {
         int priceShipment = 0;
+        String shipmetString = "";
+
         if (shipment.equals("normal")) {
             priceShipment = 30000;
+            shipmetString = "Thường";
         } else {
-            priceShipment = 50000;
+            priceShipment = 60000;
+            shipmetString = "Hoả tốc";
         }
         int totalOrder = Integer.parseInt(total) + priceShipment;
         Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
+        Iterable<OrderF> list_orders = orderRepository.findAll();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
         String id_random = hashPassword.RandomId(10);
         List<OrderF> orders = new ArrayList<>();
+
         int id = 0;
+        for (OrderF orderF : list_orders) {
+            id = orderF.getId();
+        }
         for (Cart cart : carts) {
+            id++;
             OrderF order = new OrderF(id, id_random, fullname, email,
-                    pnumber, address, "lnkhanhduy", cart.getIdFlower(),
-                    cart.getQuantityFlower(), "Chờ xác nhận", shipment, "COD", priceShipment,
+                    pnumber, address, "lnkhanhduy", cart.getIdFlower(), cart.getNameFlower(),
+                    cart.getQuantityFlower(), cart.getQuantityFlower() * cart.getPriceFlower(), "Chờ xác nhận",
+                    shipment, "COD", priceShipment,
                     totalOrder, dtf.format(now).toString());
             orders.add(order);
             orderRepository.save(order);
-            id++;
-        }
-
-        for (OrderF orderF : orders) {
-            System.out.println(orderF.toString());
+            cartRepository.updateWaitingCart(cart.getId());
         }
 
         return "/user/index";
@@ -417,9 +430,6 @@ public class HomeController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String getProfile(ModelMap modelMap) {
         Iterable<Account> accounts = accountRepository.findAccountByUsername("lnkhanhduy");
-        for (Account account : accounts) {
-            System.out.println(account.getFullname());
-        }
         modelMap.addAttribute("accounts", accounts);
         return "/user/profile";
     }

@@ -1,5 +1,8 @@
 package tdt.edu.finalproject.repositories;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,9 +19,11 @@ public interface CartRepository extends CrudRepository<Cart, Integer> {
     @Query(value = "select * from Cart c where c.id = ?1", nativeQuery = true)
     Iterable<Cart> findCartById(@Param("id") int id);
 
-    @Query(value = "select * from Cart c where c.username = ?1 and c.status = 'add_cart'", nativeQuery = true)
+    @Query(value = "select * from Cart c where c.username = ?1 and c.status = 'Thêm vào giỏ'", nativeQuery = true)
     Iterable<Cart> findCartByUsernameOrder(@Param("username") String username);
 
-    @Query(value = "UPDATE Cart c SET c.status = 'waiting' WHERE c.id = ?1", nativeQuery = true)
-    <S> void saveCart(@Param("id") int id);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Cart c SET c.status = 'Đã đặt hàng' WHERE c.id = ?1", nativeQuery = true)
+    void updateWaitingCart(@Param("id") int id);
 }

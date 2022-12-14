@@ -67,7 +67,7 @@ public class HashPassword {
         return bytes;
     }
 
-    public static String RandomId(int n) {
+    public String RandomId(int n) {
 
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
