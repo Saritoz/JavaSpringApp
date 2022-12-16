@@ -29,7 +29,7 @@
                 <div class="form siginForm">
                     <form action="/login" method="post">
                         <div class="fs-4 form-title">Đăng nhập</div>
-                        <input id="login-username" name="login-username"  value="${login-username!=0?login-username:''}"  class="form-input" type="text" placeholder="Tên đăng nhập" autocomplete="off">
+                        <input id="login-username" name="login-username" value=""  class="form-input" type="text" placeholder="Tên đăng nhập" autocomplete="off">
                         <input id="login-password" name="login-password" class="form-input" type="password" placeholder="Mật khẩu">
                         <div id="login-message" class="text-danger mb-2"></div>
                         <input id="btnLogin" class="form-input" type="submit" value="Đăng nhập" style="--ct-color: #03a9f4">

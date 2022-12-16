@@ -1,3 +1,4 @@
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +47,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/admin/logout" >
                         <i class="fa-solid fa-right-from-bracket ct-icon"></i>
                         <span class="ct-title">Đăng xuất</span>
                     </a>
@@ -62,7 +63,7 @@
                 <div></div>
                 <div class="ct-user">
                     <span>Xin chào, </span>
-                    <span>Admin</span>
+                    <span style="color: red;">${sessionScope.fullname}</span>
                 </div>
             </div>
 

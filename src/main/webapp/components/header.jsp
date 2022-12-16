@@ -55,6 +55,7 @@
                             </li>
                             <li><a class="dropdown-item" href="/history">Lịch sử mua hàng</a></li>
                             <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
                         </ul>
                     </li>
                 </ul>

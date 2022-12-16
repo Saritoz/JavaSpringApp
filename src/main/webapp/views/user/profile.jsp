@@ -19,30 +19,28 @@
         <div class="name-user">
             <p>Sarito</p>
         </div>
-        <c:forEach var="account" items="${accounts}">
-            <div class="row mt-5 g-5">
-                <div class="col-12 col-md-6 info-item" style="--delay: 0s">
-                    <label for="">Họ tên</label>
-                    <input type="text" autocomplete="off" value="${account.getFullname()}" disabled>
-                </div>
-                <div class="col-12 col-md-6 info-item" style="--delay: 0.3s">
-                    <label for="">Tên đăng nhập</label>
-                    <input type="text" autocomplete="off" value="${account.getUsername()}" disabled>
-                </div>
-                <div class="col-12 col-md-6 info-item" style="--delay: 0.6s">
-                    <label for="">Email</label>
-                    <input type="text" autocomplete="off" value="${account.getEmail()}" disabled>
-                </div>
-                <div class="col-12 col-md-6 info-item" style="--delay: 0.9s">
-                    <label for="">Số điện thoại</label>
-                    <input type="text" autocomplete="off" value="0123456789" disabled>
-                </div>
-                <div class="col-12 d-flex flex-row-reverse">
-                    <button class="ct-btn-profile ms-3" style="--ct-color: #0000ff">Chỉnh sửa</button>
-                    <button class="ct-btn-profile" style="--ct-color: #ff0000">Xóa tài khoản</button>
-                </div>
+        <div class="row mt-5 g-5">
+            <div class="col-12 col-md-6 info-item" style="--delay: 0s">
+                <label for="">Họ tên</label>
+                <input type="text" autocomplete="off" value="${account.getFullname()}" disabled>
             </div>
-        </c:forEach>
+            <div class="col-12 col-md-6 info-item" style="--delay: 0.3s">
+                <label for="">Tên đăng nhập</label>
+                <input type="text" autocomplete="off" value="${account.getUsername()}" disabled>
+            </div>
+            <div class="col-12 col-md-6 info-item" style="--delay: 0.6s">
+                <label for="">Email</label>
+                <input type="text" autocomplete="off" value="${account.getEmail()}" disabled>
+            </div>
+            <div class="col-12 col-md-6 info-item" style="--delay: 0.9s">
+                <label for="">Số điện thoại</label>
+                <input type="text" autocomplete="off" value="0123456789" disabled>
+            </div>
+            <div class="col-12 d-flex flex-row-reverse">
+                <button class="ct-btn-profile ms-3" style="--ct-color: #0000ff">Chỉnh sửa</button>
+                <button class="ct-btn-profile" style="--ct-color: #ff0000">Xóa tài khoản</button>
+            </div>
+        </div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"

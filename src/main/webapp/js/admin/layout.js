@@ -10,7 +10,6 @@ function activeLink() {
 
 tabs.forEach((item) => item.addEventListener('click', activeLink));
 
-
 // menu toggle
 // const ctToggle = document.querySelector(".ct-toggle");
 // const ctNavigation = document.querySelector(".ct-navigation");

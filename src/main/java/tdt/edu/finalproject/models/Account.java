@@ -17,15 +17,18 @@ public class Account {
     private String email;
     @Column(name = "password")
     private String password;
+    @Column(name = "role")
+    private String role;
 
     public Account() {
     }
 
-    public Account(String username, String fullname, String email, String password) {
+    public Account(String username, String fullname, String email, String password, String role) {
         this.username = username;
         this.fullname = fullname;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -42,5 +45,9 @@ public class Account {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getRole() {
+        return role;
     }
 }

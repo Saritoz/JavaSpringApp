@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,36 +53,45 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String getLoginPage() {
+    public String getLoginPage(ModelMap modelMap, HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            return "/user/index";
+        }
+
         return "/user/login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String postLoginPage(ModelMap modelMap, @RequestParam("login-username") String login_username,
-            @RequestParam("login-password") String login_password)
+            @RequestParam("login-password") String login_password, HttpSession httpSession)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String error = "";
+        if (httpSession.getAttribute("username") == null) {
+            String error = "";
 
-        if (login_username.isEmpty()) {
-            error = "Vui lòng điền username";
-        } else if (login_password.isEmpty()) {
-            error = "Vui lòng điền mật khẩu";
-        }
+            if (login_username.isEmpty()) {
+                error = "Vui lòng điền username";
+            } else if (login_password.isEmpty()) {
+                error = "Vui lòng điền mật khẩu";
+            }
 
-        if (!error.isEmpty()) {
-            modelMap.addAttribute("error", error);
+            if (!error.isEmpty()) {
+                modelMap.addAttribute("error", error);
+                return "/user/login";
+            }
+
+            Account account = accountRepository.findAccountByUsername(login_username);
+            if (account != null) {
+                if (hashPassword.ValidatePassword(login_password, account.getPassword())
+                        && account.getRole().equals("user")) {
+                    httpSession.setAttribute("username", account.getUsername());
+                    httpSession.setAttribute("role", account.getRole());
+                    return "/user/index";
+                }
+            }
+
+            modelMap.addAttribute("error", "Tài khoản hoặc mật khẩu không chính xác!");
             return "/user/login";
         }
-
-        Iterable<Account> findByUsername = accountRepository.findAccountByUsername(login_username);
-        for (Account account : findByUsername) {
-            if (account.getUsername().equals(login_username)
-                    && hashPassword.ValidatePassword(login_password, account.getPassword())) {
-                return "/user/flowerlist";
-            }
-        }
-        modelMap.addAttribute("error", "Tài khoản hoặc mật khẩu không chính xác!");
-        modelMap.addAttribute("login-username", login_username);
         return "/user/login";
     }
 
@@ -88,60 +99,61 @@ public class HomeController {
     public String postSignupPage(ModelMap modelMap, @RequestParam("signup-username") String signup_username,
             @RequestParam("signup-fullname") String signup_fullname, @RequestParam("signup-email") String signup_email,
             @RequestParam("signup-password") String signup_password,
-            @RequestParam("signup-confirmPassword") String signup_confirmPassword)
+            @RequestParam("signup-confirmPassword") String signup_confirmPassword, HttpSession httpSession)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String error = "";
-        if (signup_username.isEmpty()) {
-            error = "Vui lòng điền username";
-        } else if (signup_fullname.isEmpty()) {
-            error = "Vui lòng điền họ tên";
-        } else if (signup_email.isEmpty()) {
-            error = "Vui lòng điền email";
-        } else if (signup_password.isEmpty()) {
-            error = "Vui lòng nhập mật khẩu";
-        } else if (signup_confirmPassword.isEmpty()) {
-            error = "Vui lòng nhập lại mật khẩu";
-        } else if (signup_password.length() < 6) {
-            error = "Mật khẩu ít nhất 6 ký tự";
-        } else if (!signup_password.equals(signup_confirmPassword)) {
-            error = "Mật khẩu không trùng khớp";
-        }
-
-        Iterable<Account> findByUsername = accountRepository.findAccountByUsername(signup_username);
-        Iterable<Account> findByEmail = accountRepository.findAccountByEmail(signup_email);
-
-        for (Account account : findByUsername) {
-            if (account.getUsername().equals(signup_username)) {
-                error = "Tên tài khoản đã tồn tại";
+        if (httpSession.getAttribute("username") == null) {
+            String error = "";
+            if (signup_username.isEmpty()) {
+                error = "Vui lòng điền username";
+            } else if (signup_fullname.isEmpty()) {
+                error = "Vui lòng điền họ tên";
+            } else if (signup_email.isEmpty()) {
+                error = "Vui lòng điền email";
+            } else if (signup_password.isEmpty()) {
+                error = "Vui lòng nhập mật khẩu";
+            } else if (signup_confirmPassword.isEmpty()) {
+                error = "Vui lòng nhập lại mật khẩu";
+            } else if (signup_password.length() < 6) {
+                error = "Mật khẩu ít nhất 6 ký tự";
+            } else if (!signup_password.equals(signup_confirmPassword)) {
+                error = "Mật khẩu không trùng khớp";
             }
-        }
 
-        for (Account account : findByEmail) {
-            if (account.getEmail().equals(signup_email) && error.isEmpty()) {
+            Account findByUsername = accountRepository.findAccountByUsername(signup_username);
+            Account findByEmail = accountRepository.findAccountByEmail(signup_email);
+
+            if (findByUsername != null && findByUsername.getUsername().equals(signup_username)) {
+                error = "Tên tài khoản đã tồn tại";
+            } else if (findByEmail != null && findByEmail.getEmail().equals(signup_email)) {
                 error = "Email đã tồn tại";
             }
-        }
 
-        if (!error.isEmpty()) {
-            modelMap.addAttribute("error", error);
-            modelMap.addAttribute("signup_username", signup_username);
-            modelMap.addAttribute("signup_fullname", signup_fullname);
-            modelMap.addAttribute("signup_email", signup_email);
+            if (!error.isEmpty()) {
+                modelMap.addAttribute("error", error);
+                modelMap.addAttribute("signup_username", signup_username);
+                modelMap.addAttribute("signup_fullname", signup_fullname);
+                modelMap.addAttribute("signup_email", signup_email);
+                return "/user/login";
+            }
+
+            String passwordHashed = hashPassword.GenerateStringPasswordHash(signup_password);
+            Account createAccount = new Account(signup_username, signup_fullname, signup_email, passwordHashed, "user");
+            accountRepository.save(createAccount);
+            modelMap.addAttribute("message", "Tạo tài khoản thành công!");
             return "/user/login";
         }
-
-        String passwordHashed = hashPassword.GenerateStringPasswordHash(signup_password);
-        Account createAccount = new Account(signup_username, signup_fullname, signup_email, passwordHashed);
-        accountRepository.save(createAccount);
-        modelMap.addAttribute("message", "Tạo tài khoản thành công!");
         return "/user/login";
     }
 
     @RequestMapping(value = "/history", method = RequestMethod.GET)
-    public String getHistoryOrder(ModelMap modelMap) {
-        Iterable<OrderF> orders = orderRepository.findAllOrderByUsername("lnkhanhduy");
-        modelMap.addAttribute("orders", orders);
-        return "/user/historyorder";
+    public String getHistoryOrder(ModelMap modelMap, HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            Iterable<OrderF> orders = orderRepository.findAllOrderByUsername(username);
+            modelMap.addAttribute("orders", orders);
+            return "/user/historyorder";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/flowers", method = RequestMethod.GET)
@@ -244,137 +256,171 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
-    public String getCart(ModelMap modelMap) {
-        Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
-        int quantity_flower = 0;
-        int total = 0;
-        modelMap.addAttribute("carts", carts);
-        modelMap.addAttribute("totalFlower", quantity_flower);
-        modelMap.addAttribute("total", total);
-        return "/user/cartstep1";
+    public String getCart(ModelMap modelMap, HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            Iterable<Cart> carts = cartRepository.findCartByUsernameOrder(username);
+            int quantity_flower = 0;
+            int total = 0;
+            modelMap.addAttribute("carts", carts);
+            modelMap.addAttribute("totalFlower", quantity_flower);
+            modelMap.addAttribute("total", total);
+            return "/user/cartstep1";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart/add", method = RequestMethod.POST)
     public String postAddCart(ModelMap modelMap, @RequestParam("flower-id") int flower_id,
-            @RequestParam("flower-amount") int flower_amount) {
-        Iterable<Flower> flowers = flowerRepository.findFlowerById(flower_id);
-        int total = 0;
-        String name = "";
-        String image = "";
-        int price = 0;
-        for (Flower flower : flowers) {
-            total = flower.getPrice() * flower_amount;
-            name = flower.getName();
-            image = flower.getImage1();
-            price = flower.getPrice();
-        }
+            @RequestParam("flower-amount") int flower_amount, HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            Iterable<Flower> flowers = flowerRepository.findFlowerById(flower_id);
+            int total = 0;
+            String name = "";
+            String image = "";
+            int price = 0;
+            for (Flower flower : flowers) {
+                total = flower.getPrice() * flower_amount;
+                name = flower.getName();
+                image = flower.getImage1();
+                price = flower.getPrice();
+            }
 
-        Iterable<Cart> carts = cartRepository.findCartByIdFlower(flower_id);
-        for (Cart cart : carts) {
-            if (cart.getIdFlower() == flower_id) {
-                if (cart.getStatus().equals("Thêm vào giỏ")) {
-                    flower_amount += cart.getQuantityFlower();
-                    total += cart.getTotal();
-                    Cart cart1 = new Cart(cart.getId(), flower_id, name, flower_amount, price, image, "lnkhanhduy",
-                            "Thêm vào giỏ", total);
-                    cartRepository.save(cart1);
-                    Iterable<Flower> flowers1 = flowerRepository.findAll();
-                    modelMap.addAttribute("flowers", flowers1);
-                    return "/user/flowerlist";
+            Iterable<Cart> carts = cartRepository.findCartByIdFlower(flower_id);
+            for (Cart cart : carts) {
+                if (cart.getIdFlower() == flower_id) {
+                    if (cart.getStatus().equals("Thêm vào giỏ")) {
+                        flower_amount += cart.getQuantityFlower();
+                        total += cart.getTotal();
+                        Cart cart1 = new Cart(cart.getId(), flower_id, name, flower_amount, price, image, username,
+                                "Thêm vào giỏ", total);
+                        cartRepository.save(cart1);
+                        Iterable<Flower> flowers1 = flowerRepository.findAll();
+                        modelMap.addAttribute("flowers", flowers1);
+                        return "/user/flowerlist";
+                    }
                 }
             }
-        }
 
-        Cart cart = new Cart(0, flower_id, name, flower_amount, price, image, "lnkhanhduy", "Thêm vào giỏ", total);
-        cartRepository.save(cart);
-        Iterable<Flower> flowers1 = flowerRepository.findAll();
-        modelMap.addAttribute("flowers", flowers1);
-        return "/user/flowerlist";
+            Cart cart = new Cart(0, flower_id, name, flower_amount, price, image, username, "Thêm vào giỏ", total);
+            cartRepository.save(cart);
+            Iterable<Flower> flowers1 = flowerRepository.findAll();
+            modelMap.addAttribute("flowers", flowers1);
+            return "/user/flowerlist";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart/delete", method = RequestMethod.POST)
-    public String postDelteCart(ModelMap modelMap, @RequestParam("id-cart") String id_cart) {
-        cartRepository.updateCancelCart(Integer.parseInt(id_cart));
-        Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
-        int quantity_flower = 0;
-        int total = 0;
-        modelMap.addAttribute("carts", carts);
-        modelMap.addAttribute("totalFlower", quantity_flower);
-        modelMap.addAttribute("total", total);
-        return "/user/cartstep1";
+    public String postDelteCart(ModelMap modelMap, @RequestParam("id-cart") String id_cart, HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            cartRepository.updateCancelCart(Integer.parseInt(id_cart));
+            Iterable<Cart> carts = cartRepository.findCartByUsernameOrder(username);
+            int quantity_flower = 0;
+            int total = 0;
+            modelMap.addAttribute("carts", carts);
+            modelMap.addAttribute("totalFlower", quantity_flower);
+            modelMap.addAttribute("total", total);
+            return "/user/cartstep1";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart/ordernow", method = RequestMethod.POST)
     public String postCart(ModelMap modelMap, @RequestParam("flower-id") int flower_id,
-            @RequestParam("flower-amount") int flower_amount) {
-        Iterable<Flower> flowers = flowerRepository.findFlowerById(flower_id);
-        int total = 0;
-        String name = "";
-        String image = "";
-        int price = 0;
-        for (Flower flower : flowers) {
-            total = flower.getPrice() * flower_amount;
-            name = flower.getName();
-            image = flower.getImage1();
-            price = flower.getPrice();
-        }
-        List<Cart> carts = new ArrayList<>();
-        Cart cart = new Cart(0, flower_id, name, flower_amount, price, image, "lnkhanhduy", "ordernow", total);
-        carts.add(cart);
+            @RequestParam("flower-amount") int flower_amount, HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            Iterable<Flower> flowers = flowerRepository.findFlowerById(flower_id);
+            int total = 0;
+            String name = "";
+            String image = "";
+            int price = 0;
+            for (Flower flower : flowers) {
+                total = flower.getPrice() * flower_amount;
+                name = flower.getName();
+                image = flower.getImage1();
+                price = flower.getPrice();
+            }
+            List<Cart> carts = new ArrayList<>();
+            Cart cart = new Cart(0, flower_id, name, flower_amount, price, image, username, "ordernow", total);
+            carts.add(cart);
 
-        modelMap.addAttribute("carts", carts);
-        modelMap.addAttribute("totalFlower", flower_amount);
-        modelMap.addAttribute("cart_status", "ordernow");
-        modelMap.addAttribute("id_flower", flower_id);
-        modelMap.addAttribute("name_flower", name);
-        modelMap.addAttribute("total", total);
-        return "/user/cartstep1";
+            modelMap.addAttribute("carts", carts);
+            modelMap.addAttribute("totalFlower", flower_amount);
+            modelMap.addAttribute("cart_status", "ordernow");
+            modelMap.addAttribute("id_flower", flower_id);
+            modelMap.addAttribute("name_flower", name);
+            modelMap.addAttribute("total", total);
+            return "/user/cartstep1";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart-step-2", method = RequestMethod.GET)
-    public String getFillInfo() {
-        return "/user/cartstep2";
+    public String getFillInfo(HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            return "/user/cartstep2";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart-step-2", method = RequestMethod.POST)
     public String postFillInfo(ModelMap modelMap, @RequestParam("total") String total,
             @RequestParam("quantity-flower") String quantity_flower, @RequestParam("id-flower") String id_flower,
-            @RequestParam("name-flower") String name_flower) {
-        Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
-        modelMap.addAttribute("carts", carts);
-        modelMap.addAttribute("total", total);
-        return "/user/cartstep2";
+            @RequestParam("name-flower") String name_flower, HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            Iterable<Cart> carts = cartRepository.findCartByUsernameOrder(username);
+            modelMap.addAttribute("carts", carts);
+            modelMap.addAttribute("total", total);
+            return "/user/cartstep2";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart-step-2/ordernow", method = RequestMethod.POST)
     public String postCartStep2Ordernow(ModelMap modelMap, @RequestParam("quantity-flower") String quantity_flower,
             @RequestParam("cart-status") String cart_status, @RequestParam("id-flower") int id_flower,
-            @RequestParam("total") String total, @RequestParam("name-flower") String name_flower) {
-        List<Cart> carts = new ArrayList<>();
-        Cart cart = new Cart(0, id_flower, name_flower, Integer.parseInt(quantity_flower), 0, "", "lnkhanhduy",
-                "ordernow",
-                Integer.parseInt(total));
-        carts.add(cart);
-        modelMap.addAttribute("total", total);
-        modelMap.addAttribute("carts", carts);
-        return "/user/cartstep2";
+            @RequestParam("total") String total, @RequestParam("name-flower") String name_flower,
+            HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            List<Cart> carts = new ArrayList<>();
+            Cart cart = new Cart(0, id_flower, name_flower, Integer.parseInt(quantity_flower), 0, "", username,
+                    "ordernow",
+                    Integer.parseInt(total));
+            carts.add(cart);
+            modelMap.addAttribute("total", total);
+            modelMap.addAttribute("carts", carts);
+            return "/user/cartstep2";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart-step-3", method = RequestMethod.GET)
-    public String getPayment() {
-        return "/user/cartstep3";
+    public String getPayment(HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            return "/user/cartstep3";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart-step-3", method = RequestMethod.POST)
     public String postPayment(ModelMap modelMap, @RequestParam("fullname") String fullname,
             @RequestParam("pnumber") String pnumber, @RequestParam("email") String email,
-            @RequestParam("address") String address, @RequestParam("total") String total) {
-        modelMap.addAttribute("total", total);
-        modelMap.addAttribute("fullname", fullname);
-        modelMap.addAttribute("pnumber", pnumber);
-        modelMap.addAttribute("email", email);
-        modelMap.addAttribute("address", address);
-        return "/user/cartstep3";
+            @RequestParam("address") String address, @RequestParam("total") String total, HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            modelMap.addAttribute("total", total);
+            modelMap.addAttribute("fullname", fullname);
+            modelMap.addAttribute("pnumber", pnumber);
+            modelMap.addAttribute("email", email);
+            modelMap.addAttribute("address", address);
+            return "/user/cartstep3";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart-step-3/ordernow", method = RequestMethod.POST)
@@ -382,19 +428,22 @@ public class HomeController {
             @RequestParam("pnumber") String pnumber, @RequestParam("email") String email,
             @RequestParam("address") String address, @RequestParam("cart-status") String cart_status,
             @RequestParam("total") String total, @RequestParam("quantity-flower") String quantity_flower,
-            @RequestParam("id-flower") String id_flower, @RequestParam("name-flower") String name_flower) {
+            @RequestParam("id-flower") String id_flower, @RequestParam("name-flower") String name_flower,
+            HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            modelMap.addAttribute("total", total);
+            modelMap.addAttribute("cart_status", cart_status);
+            modelMap.addAttribute("quantity_flower", quantity_flower);
+            modelMap.addAttribute("id_flower", id_flower);
+            modelMap.addAttribute("fullname", fullname);
+            modelMap.addAttribute("pnumber", pnumber);
+            modelMap.addAttribute("email", email);
+            modelMap.addAttribute("address", address);
+            modelMap.addAttribute("name_flower", name_flower);
 
-        modelMap.addAttribute("total", total);
-        modelMap.addAttribute("cart_status", cart_status);
-        modelMap.addAttribute("quantity_flower", quantity_flower);
-        modelMap.addAttribute("id_flower", id_flower);
-        modelMap.addAttribute("fullname", fullname);
-        modelMap.addAttribute("pnumber", pnumber);
-        modelMap.addAttribute("email", email);
-        modelMap.addAttribute("address", address);
-        modelMap.addAttribute("name_flower", name_flower);
-
-        return "/user/cartstep3";
+            return "/user/cartstep3";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart-step-4/ordernow", method = RequestMethod.POST)
@@ -403,30 +452,35 @@ public class HomeController {
             @RequestParam("address") String address,
             @RequestParam("shipment") String shipment, @RequestParam("payment") String payment,
             @RequestParam("id-flower") String id_flower, @RequestParam("quantity-flower") String quantity_flower,
-            @RequestParam("total") String total, @RequestParam("name-flower") String name_flower) {
-        Flower flower = flowerRepository.findFlowerByIdFlower(Integer.parseInt(id_flower));
-        int priceShipment = 0;
-        String shipmentString = "";
-        if (shipment.equals("normal")) {
-            priceShipment = 30000;
-            shipmentString = "Thường";
-        } else {
-            priceShipment = 60000;
-            shipmentString = "Hoả tốc";
+            @RequestParam("total") String total, @RequestParam("name-flower") String name_flower,
+            HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            Flower flower = flowerRepository.findFlowerByIdFlower(Integer.parseInt(id_flower));
+            int priceShipment = 0;
+            String shipmentString = "";
+            if (shipment.equals("normal")) {
+                priceShipment = 30000;
+                shipmentString = "Thường";
+            } else {
+                priceShipment = 60000;
+                shipmentString = "Hoả tốc";
+            }
+            int totalOrder = Integer.parseInt(total) + priceShipment;
+            String id_random = hashPassword.RandomId(10);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            LocalDateTime now = LocalDateTime.now();
+            OrderF order = new OrderF(0, id_random, fullname, email,
+                    pnumber, address, username, Integer.parseInt(id_flower), name_flower,
+                    Integer.parseInt(quantity_flower), Integer.parseInt(total), "Chờ xác nhận", shipmentString, "COD",
+                    priceShipment,
+                    totalOrder, dtf.format(now).toString(), "");
+            orderRepository.save(order);
+            flowerRepository.updateQuantityFlower(flower.getQuantity() - Integer.parseInt(quantity_flower),
+                    Integer.parseInt(id_flower));
+            return "/user/index";
         }
-        int totalOrder = Integer.parseInt(total) + priceShipment;
-        String id_random = hashPassword.RandomId(10);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDateTime now = LocalDateTime.now();
-        OrderF order = new OrderF(0, id_random, fullname, email,
-                pnumber, address, "lnkhanhduy", Integer.parseInt(id_flower), name_flower,
-                Integer.parseInt(quantity_flower), Integer.parseInt(total), "Chờ xác nhận", shipmentString, "COD",
-                priceShipment,
-                totalOrder, dtf.format(now).toString(), "");
-        orderRepository.save(order);
-        flowerRepository.updateQuantityFlower(flower.getQuantity() - Integer.parseInt(quantity_flower),
-                Integer.parseInt(id_flower));
-        return "/user/index";
+        return "/user/login";
     }
 
     @RequestMapping(value = "/cart-step-4", method = RequestMethod.POST)
@@ -434,51 +488,69 @@ public class HomeController {
             @RequestParam("pnumber") String pnumber, @RequestParam("email") String email,
             @RequestParam("address") String address,
             @RequestParam("shipment") String shipment, @RequestParam("payment") String payment,
-            @RequestParam("total") String total) {
-        int priceShipment = 0;
-        String shipmentString = "";
+            @RequestParam("total") String total, HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            int priceShipment = 0;
+            String shipmentString = "";
 
-        if (shipment.equals("normal")) {
-            priceShipment = 30000;
-            shipmentString = "Thường";
-        } else {
-            priceShipment = 60000;
-            shipmentString = "Hoả tốc";
-        }
-        int totalOrder = Integer.parseInt(total) + priceShipment;
-        Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
-        Iterable<OrderF> list_orders = orderRepository.findAll();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDateTime now = LocalDateTime.now();
-        String id_random = hashPassword.RandomId(10);
-        List<OrderF> orders = new ArrayList<>();
+            if (shipment.equals("normal")) {
+                priceShipment = 30000;
+                shipmentString = "Thường";
+            } else {
+                priceShipment = 60000;
+                shipmentString = "Hoả tốc";
+            }
+            int totalOrder = Integer.parseInt(total) + priceShipment;
+            Iterable<Cart> carts = cartRepository.findCartByUsernameOrder(username);
+            Iterable<OrderF> list_orders = orderRepository.findAll();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            LocalDateTime now = LocalDateTime.now();
+            String id_random = hashPassword.RandomId(10);
+            List<OrderF> orders = new ArrayList<>();
 
-        int id = 0;
-        for (OrderF orderF : list_orders) {
-            id = orderF.getId();
-        }
-        for (Cart cart : carts) {
-            id++;
-            OrderF order = new OrderF(id, id_random, fullname, email,
-                    pnumber, address, "lnkhanhduy", cart.getIdFlower(), cart.getNameFlower(),
-                    cart.getQuantityFlower(), cart.getQuantityFlower() * cart.getPriceFlower(), "Chờ xác nhận",
-                    shipmentString, "COD", priceShipment,
-                    totalOrder, dtf.format(now).toString(), "");
-            orders.add(order);
-            orderRepository.save(order);
-            cartRepository.updateWaitingCart(cart.getId());
-            Flower flower = flowerRepository.findFlowerByIdFlower(cart.getIdFlower());
-            flowerRepository.updateQuantityFlower(flower.getQuantity() - cart.getQuantityFlower(),
-                    cart.getIdFlower());
-        }
+            int id = 0;
+            for (OrderF orderF : list_orders) {
+                id = orderF.getId();
+            }
+            for (Cart cart : carts) {
+                id++;
+                OrderF order = new OrderF(id, id_random, fullname, email,
+                        pnumber, address, username, cart.getIdFlower(), cart.getNameFlower(),
+                        cart.getQuantityFlower(), cart.getQuantityFlower() * cart.getPriceFlower(), "Chờ xác nhận",
+                        shipmentString, "COD", priceShipment,
+                        totalOrder, dtf.format(now).toString(), "");
+                orders.add(order);
+                orderRepository.save(order);
+                cartRepository.updateWaitingCart(cart.getId());
+                Flower flower = flowerRepository.findFlowerByIdFlower(cart.getIdFlower());
+                flowerRepository.updateQuantityFlower(flower.getQuantity() - cart.getQuantityFlower(),
+                        cart.getIdFlower());
+            }
 
-        return "/user/index";
+            return "/user/index";
+        }
+        return "/user/login";
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String getProfile(ModelMap modelMap) {
-        Iterable<Account> accounts = accountRepository.findAccountByUsername("lnkhanhduy");
-        modelMap.addAttribute("accounts", accounts);
-        return "/user/profile";
+    public String getProfile(ModelMap modelMap, HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            Account account = accountRepository.findAccountByUsername(username);
+            modelMap.addAttribute("account", account);
+            return "/user/profile";
+        }
+        return "/user/login";
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String getLogout(HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            httpSession.removeAttribute("username");
+            httpSession.removeAttribute("role");
+            return "/user/login";
+        }
+        return "/user/index";
     }
 }

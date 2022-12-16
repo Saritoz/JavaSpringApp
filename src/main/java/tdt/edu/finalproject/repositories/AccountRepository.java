@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import tdt.edu.finalproject.models.Account;
 
 public interface AccountRepository extends CrudRepository<Account, String> {
-    Iterable<Account> findAccountByUsername(String username);
 
-    Iterable<Account> findAccountByEmail(String email);
+    @Query(value = "select * from Account a where a.username = ?1", nativeQuery = true)
+    Account findAccountByUsername(String username);
+
+    @Query(value = "select * from Account a where a.email = ?1", nativeQuery = true)
+    Account findAccountByEmail(String email);
 
     @Modifying
     @Transactional
