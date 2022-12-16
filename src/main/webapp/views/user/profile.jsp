@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Thông tin tài khoản</title>
     <link rel="stylesheet" href="../css/user/profile.css">
     <link rel="stylesheet" href="../css/user/header.css">
 </head>
@@ -26,7 +26,7 @@
                     <input type="text" autocomplete="off" value="${account.getFullname()}" disabled>
                 </div>
                 <div class="col-12 col-md-6 info-item" style="--delay: 0.3s">
-                    <label for="">Username</label>
+                    <label for="">Tên đăng nhập</label>
                     <input type="text" autocomplete="off" value="${account.getUsername()}" disabled>
                 </div>
                 <div class="col-12 col-md-6 info-item" style="--delay: 0.6s">

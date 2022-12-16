@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <nav class="navbar navbar-expand-xl navbar-light fixed-top ct-navbar">
     <div class="container-fluid container">
-        <a class="navbar-brand" href="#">Flower Shop</a>
+        <a class="navbar-brand" href="/">Flower Shop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
             aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fa-solid fa-bars"></i>
@@ -12,7 +12,7 @@
                     <a class="nav-link active" aria-current="page" href="/">Trang chủ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/flowers">Hoa</a>
+                    <a class="nav-link" href="/flowers">Tất cả hoa</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFlowerTheme" role="button"
@@ -20,10 +20,9 @@
                         Hoa chủ đề
                     </a>
                     <ul class="dropdown-menu ct-subnavbar" aria-labelledby="navbarDropdownFlowerTheme">
-                        <li><a class="dropdown-item" href="#">Hoa sinh nhật</a></li>
-                        <li><a class="dropdown-item" href="#">Hoa chia buồn</a></li>
-                        <li><a class="dropdown-item" href="#">Hoa chúc mừng</a></li>
-                        <li><a class="dropdown-item" href="#">Hoa tình yêu</a></li>
+                        <li><a class="dropdown-item" href="/flowers/birthday">Hoa sinh nhật</a></li>
+                        <li><a class="dropdown-item" href="/flowers/congrate">Hoa chúc mừng</a></li>
+                        <li><a class="dropdown-item" href="/flowers/love">Hoa tình yêu</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -32,12 +31,12 @@
                         Hoa sự kiện
                     </a>
                     <ul class="dropdown-menu ct-subnavbar" aria-labelledby="navbarDropdownFlowerEvent">
-                        <li><a class="dropdown-item" href="#">Hoa khai trương</a></li>
-                        <li><a class="dropdown-item" href="#">Hoa đám cưới</a></li>
+                        <li><a class="dropdown-item" href="/flowers/open">Hoa khai trương</a></li>
+                        <li><a class="dropdown-item" href="/flowers/wedding">Hoa đám cưới</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a href="" class="nav-link">Hoa ngoại nhập</a></li>
-                <li class="nav-item"><a href="" class="nav-link">Thông tin</a></li>
+                <li class="nav-item"><a href="/flowers/foreign" class="nav-link">Hoa ngoại nhập</a></li>
+                <li class="nav-item"><a href="/information" class="nav-link">Thông tin</a></li>
             </ul>
             <div class="d-flex">
                 <ul class="nav">
@@ -50,12 +49,11 @@
                         </a>
                         <ul class="dropdown-menu ct-subnavbar ct-subnavbar-right"
                             aria-labelledby="navbarDropdownUser">
-                            <li><a class="dropdown-item" href="/login">Đăng nhập</a></li>
-                            <li><a class="dropdown-item" href="#">Đăng kí</a></li>
+                            <li><a class="dropdown-item" href="/login">Đăng nhập/Đăng kí</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
+                            <li><a class="dropdown-item" href="/history">Lịch sử mua hàng</a></li>
                             <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
                         </ul>
                     </li>

@@ -43,13 +43,15 @@ public class OrderF {
     private int total;
     @Column(name = "timeOrder")
     private String timeOrder;
+    @Column(name = "timeResponse")
+    private String timeResponse;
 
     public OrderF() {
     }
 
     public OrderF(int id, String idOrder, String fullname, String email, String phonenumber, String address,
             String username, int idFlower, String nameFlower, int quantityFlower, int totalPriceFlower, String status,
-            String shipment, String payment, int priceShipment, int total, String timeOrder) {
+            String shipment, String payment, int priceShipment, int total, String timeOrder, String timeResponse) {
         this.id = id;
         this.idOrder = idOrder;
         this.fullname = fullname;
@@ -67,141 +69,78 @@ public class OrderF {
         this.priceShipment = priceShipment;
         this.total = total;
         this.timeOrder = timeOrder;
+        this.timeResponse = timeResponse;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getIdOrder() {
         return idOrder;
-    }
-
-    public void setIdOrder(String idOrder) {
-        this.idOrder = idOrder;
     }
 
     public String getFullname() {
         return fullname;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhonenumber() {
         return phonenumber;
     }
 
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-
     public String getAddress() {
         return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public int getIdFlower() {
         return idFlower;
-    }
-
-    public void setIdFlower(int idFlower) {
-        this.idFlower = idFlower;
     }
 
     public String getNameFlower() {
         return nameFlower;
     }
 
-    public void setNameFlower(String nameFlower) {
-        this.nameFlower = nameFlower;
-    }
-
     public int getQuantityFlower() {
         return quantityFlower;
-    }
-
-    public void setQuantityFlower(int quantityFlower) {
-        this.quantityFlower = quantityFlower;
     }
 
     public int getTotalPriceFlower() {
         return totalPriceFlower;
     }
 
-    public void setTotalPriceFlower(int totalPriceFlower) {
-        this.totalPriceFlower = totalPriceFlower;
-    }
-
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getShipment() {
         return shipment;
     }
 
-    public void setShipment(String shipment) {
-        this.shipment = shipment;
-    }
-
     public String getPayment() {
         return payment;
-    }
-
-    public void setPayment(String payment) {
-        this.payment = payment;
     }
 
     public int getPriceShipment() {
         return priceShipment;
     }
 
-    public void setPriceShipment(int priceShipment) {
-        this.priceShipment = priceShipment;
-    }
-
     public int getTotal() {
         return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
     }
 
     public String getTimeOrder() {
         return timeOrder;
     }
 
-    public void setTimeOrder(String timeOrder) {
-        this.timeOrder = timeOrder;
+    public String getTimeResponse() {
+        return timeResponse;
     }
 }

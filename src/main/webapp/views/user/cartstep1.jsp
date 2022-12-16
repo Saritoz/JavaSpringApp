@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
+    <title>Giỏ hàng</title>
     <link rel="stylesheet" href="../../css/user/cartstep1.css">
     <link rel="stylesheet" href="../../css/user/header.css">
 </head>
@@ -37,21 +37,21 @@
                 <table class="table table-hover w-100">
                     <thead class="text-center">
                         <tr>
-                            <th scope="col">Sản phẩm</th>
+                            <th scope="col">Hình ảnh</th>
                             <th scope="col">Tên sản phẩm</th>
                             <th scope="col">Số lượng</th>
                             <th scope="col">Tổng tiền</th>
-                            <th scope="col"> </th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody class="text-center" style="vertical-align: middle;">
                         <c:forEach var="cart" items="${carts}">
                             <tr>
-                                <td><img class="ct-img" src="../../images/${cart.getImageFlower()}" alt="" width="200"></td>
+                                <td><img class="ct-img" src="../../images/${cart.getImageFlower()}" alt="" width="50" height="50" style="object-fit: cover;"></td>
                                 <td>${cart.getNameFlower()}</td>
-                                <td><input type="number" value="${cart.getQuantityFlower()}" min="1" max="99" width="50" readonly></td>
+                                <td>${cart.getQuantityFlower()}</td>
                                 <td>${cart.getPriceFlower()}</td>
-                                <td><i class="fa-solid fa-trash-can text-danger ct-icon"></i></td>
+                                <td data-id="${cart.getId()}" class="btn-delete-order"><i class="fa-solid fa-trash-can text-danger ct-icon"></i></td>
                             </tr>
                         </c:forEach>
                     </tbody>

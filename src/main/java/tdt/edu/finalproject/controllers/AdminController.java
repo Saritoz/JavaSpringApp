@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import tdt.edu.finalproject.models.Account;
@@ -58,6 +56,25 @@ public class AdminController {
 
     @RequestMapping("")
     public String getDashboard(ModelMap modelMap) {
+        Iterable<OrderF> orders = orderRepository.findAllOrderGroupById();
+        int flower_sold = 0;
+        int order_waiting = 0;
+        int total_today = 0;
+        for (OrderF orderF : orders) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            LocalDateTime now = LocalDateTime.now();
+            if (orderF.getTimeResponse().equals(dtf.format(now).toString())
+                    && orderF.getStatus().equals("Thành công")) {
+                flower_sold++;
+                total_today += orderF.getTotal();
+            }
+            if (orderF.getStatus().equals("Chờ xác nhận")) {
+                order_waiting++;
+            }
+        }
+        modelMap.addAttribute("flower_sold", flower_sold);
+        modelMap.addAttribute("order_waiting", order_waiting);
+        modelMap.addAttribute("total_today", total_today);
         modelMap.addAttribute("content", "dashboard.jsp");
         modelMap.addAttribute("active", 0);
         return "/admin/layout";
@@ -107,32 +124,8 @@ public class AdminController {
     public String addProduct(ModelMap modelMap, @RequestParam("name-product") String name_product,
             @RequestParam("price-product") int price_product, @RequestParam("desc-product") String desc_product,
             @RequestParam("quantity-product") int quantity_product,
+            @RequestParam("category-product") String category_product,
             @RequestParam("images-product") MultipartFile[] multipartFile) {
-
-        String error = "";
-        if (name_product.isEmpty()) {
-            error = "Vui lòng nhập tên sản phẩm";
-        } else if (price_product == 0) {
-            error = "Vui lòng nhập giá sản phẩm";
-        } else if (desc_product.isEmpty()) {
-            error = "Vui lòng nhập mô tả sản phẩm";
-        } else if (quantity_product == 0) {
-            error = "Vui lòng nhập số lượng sản phẩm";
-        }
-
-        if (!error.isEmpty()) {
-            modelMap.addAttribute("error", error);
-            modelMap.addAttribute("name-product", name_product);
-            modelMap.addAttribute("price-product", price_product);
-            modelMap.addAttribute("desc-product", desc_product);
-            modelMap.addAttribute("quantity-product", quantity_product);
-            Iterable<Flower> flowers = flowerRepository.findAll();
-            modelMap.addAttribute("flowers", flowers);
-            modelMap.addAttribute("content", "productmanagement.jsp");
-            modelMap.addAttribute("active", 2);
-            return "/admin/layout";
-        }
-
         List<String> imageStrings = new ArrayList<String>();
         try {
             for (MultipartFile multipartF : multipartFile) {
@@ -143,14 +136,13 @@ public class AdminController {
                 imageRepository.saveImage(multipartF, nameImage);
             }
             Flower flower = new Flower(0, name_product, price_product, desc_product,
-                    quantity_product, (imageStrings.size()) > 0 ? (imageStrings.get(0)) : null,
+                    quantity_product, category_product, (imageStrings.size()) > 0 ? (imageStrings.get(0)) : null,
                     (imageStrings.size()) > 1 ? (imageStrings.get(1)) : null,
                     (imageStrings.size()) > 2 ? (imageStrings.get(2)) : null,
                     (imageStrings.size()) > 3 ? (imageStrings.get(3)) : null,
                     (imageStrings.size()) > 4 ? (imageStrings.get(4)) : null);
             flowerRepository.save(flower);
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
 
@@ -163,34 +155,12 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/productmanagement/edit", method = RequestMethod.POST)
-    public String editProduct(ModelMap modelMap, @RequestParam("id-product") int id_product,
+    public String updateProduct(ModelMap modelMap, @RequestParam("id-product") int id_product,
             @RequestParam("name-product") String name_product,
             @RequestParam("price-product") int price_product, @RequestParam("desc-product") String desc_product,
             @RequestParam("quantity-product") int quantity_product,
+            @RequestParam("category-product") String category_product,
             @RequestParam("images-product") MultipartFile[] multipartFile) throws IOException {
-        String error = "";
-        if (name_product.isEmpty()) {
-            error = "Vui lòng nhập tên sản phẩm";
-        } else if (price_product == 0) {
-            error = "Vui lòng nhập giá sản phẩm";
-        } else if (desc_product.isEmpty()) {
-            error = "Vui lòng nhập mô tả sản phẩm";
-        } else if (quantity_product == 0) {
-            error = "Vui lòng nhập số lượng sản phẩm";
-        }
-
-        if (!error.isEmpty()) {
-            modelMap.addAttribute("error", error);
-            modelMap.addAttribute("name-product", name_product);
-            modelMap.addAttribute("price-product", price_product);
-            modelMap.addAttribute("desc-product", desc_product);
-            modelMap.addAttribute("quantity-product", quantity_product);
-            Iterable<Flower> flowers = flowerRepository.findAll();
-            modelMap.addAttribute("flowers", flowers);
-            modelMap.addAttribute("content", "productmanagement.jsp");
-            modelMap.addAttribute("active", 2);
-            return "/admin/layout";
-        }
         if (!multipartFile[0].isEmpty()) {
             List<String> imageStrings = new ArrayList<String>();
             try {
@@ -201,19 +171,20 @@ public class AdminController {
                     imageStrings.add(nameImage);
                     imageRepository.saveImage(multipartF, nameImage);
                 }
-                Flower flower = new Flower(id_product, name_product, price_product, desc_product,
-                        quantity_product, (imageStrings.size()) > 0 ? (imageStrings.get(0)) : null,
+                Flower flower = new Flower(id_product, name_product, price_product,
+                        desc_product,
+                        quantity_product, category_product, (imageStrings.size()) > 0 ? (imageStrings.get(0)) : null,
                         (imageStrings.size()) > 1 ? (imageStrings.get(1)) : null,
                         (imageStrings.size()) > 2 ? (imageStrings.get(2)) : null,
                         (imageStrings.size()) > 3 ? (imageStrings.get(3)) : null,
                         (imageStrings.size()) > 4 ? (imageStrings.get(4)) : null);
                 flowerRepository.save(flower);
             } catch (Exception e) {
-                // TODO: handle exception
                 e.printStackTrace();
             }
         } else {
-            flowerRepository.updateFlower(name_product, price_product, desc_product, quantity_product, id_product);
+            flowerRepository.updateFlower(name_product, price_product, desc_product, quantity_product, category_product,
+                    id_product);
         }
 
         Iterable<Flower> flowers = flowerRepository.findAll();
@@ -244,27 +215,66 @@ public class AdminController {
         return "/admin/layout";
     }
 
-    @RequestMapping("/ordermanagement/{action}")
-    public String updateOrderManagement(ModelMap modelMap, @PathVariable String action,
-            @RequestParam("idOrder") String idOrder) {
-        if (action.equals("success")) {
-            orderRepository.updateSuccessOrder(idOrder);
-        } else if (action.equals("delivery")) {
-            orderRepository.updateDeliveryOrder(idOrder);
-        } else if (action.equals("deny")) {
-            orderRepository.updateDenyOrder(idOrder);
-        }
+    @PostMapping("/ordermanagement/delivery")
+    public ResponseEntity<String> updateDeliveryOrderManagement(@RequestBody String idOrder) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+        orderRepository.updateTimeResponserder(dtf.format(now).toString(), idOrder);
+        orderRepository.updateDeliveryOrder(idOrder);
+        return new ResponseEntity<>("Update delivery", HttpStatus.OK);
+    }
 
-        Iterable<OrderF> ordersGroupBy = orderRepository.findAllOrderGroupById();
-        modelMap.addAttribute("ordersGroupBy", ordersGroupBy);
-        modelMap.addAttribute("content", "ordermanagement.jsp");
-        modelMap.addAttribute("active", 3);
-        return "/admin/layout";
+    @PostMapping("/ordermanagement/success")
+    public ResponseEntity<String> updateSuccessOrderManagement(@RequestBody String idOrder) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+        orderRepository.updateTimeResponserder(dtf.format(now).toString(), idOrder);
+        orderRepository.updateSuccessOrder(idOrder);
+        return new ResponseEntity<>("Update success", HttpStatus.OK);
+    }
+
+    @PostMapping("/ordermanagement/deny")
+    public ResponseEntity<String> updateDenyOrderManagement(@RequestBody String idOrder) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+        orderRepository.updateTimeResponserder(dtf.format(now).toString(), idOrder);
+        orderRepository.updateDenyOrder(idOrder);
+        return new ResponseEntity<>("Update deny", HttpStatus.OK);
     }
 
     @GetMapping("/ordermanagement/detail/{id}")
     public ResponseEntity<List<OrderF>> getDetailOrderManagement(@PathVariable String id) {
         List<OrderF> orders = orderRepository.findOrderByIdOrder(id);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @GetMapping("/ordermanagement/getall")
+    public ResponseEntity<List<OrderF>> getAllOrderManagement() {
+        List<OrderF> orders = orderRepository.findAllOrder();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @GetMapping("/ordermanagement/getsuccess")
+    public ResponseEntity<List<OrderF>> getSuccesOrderManagement() {
+        List<OrderF> orders = orderRepository.findAllOrderBySuccess();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @GetMapping("/ordermanagement/getdelivery")
+    public ResponseEntity<List<OrderF>> getDeliveryOrderManagement() {
+        List<OrderF> orders = orderRepository.findAllOrderByDelivery();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @GetMapping("/ordermanagement/getwaiting")
+    public ResponseEntity<List<OrderF>> getWaitingOrderManagement() {
+        List<OrderF> orders = orderRepository.findAllOrderByWaiting();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @GetMapping("/ordermanagement/getdeny")
+    public ResponseEntity<List<OrderF>> getDenyOrderManagement() {
+        List<OrderF> orders = orderRepository.findAllOrderByDeny();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 }

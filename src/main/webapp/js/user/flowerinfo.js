@@ -1,6 +1,7 @@
 let btn_order_now = document.querySelector("#btn-order-now-info");
 let btn_add_cart = document.querySelector("#btn-add-cart-info");
 let flower_id = document.querySelector("#flower-id");
+let max_value_flower = 0;
 
 let currentImage = 0;
 
@@ -18,6 +19,24 @@ let amount = document.querySelector("#amount");
 
 imageNodes[currentImage].classList.add("active");
 thumbnailNodes[currentImage].classList.add("active");
+
+window.onload = () => {
+  $.ajax({
+    type: "GET",
+    contentType: "application/json",
+    url: "/flowerinfo/detail/" + flower_id.value,
+    dataType: "json",
+    cache: false,
+    timeout: 600000,
+    success: function (data) {
+      max_value_flower = data.quantity;
+      console.log(max_value_flower);
+    },
+    error: function (e) {
+      console.log("ERROR : ", e);
+    },
+  });
+};
 
 for (let index = 0; index < thumbnailNodes.length; index++) {
   thumbnailNodes[index].addEventListener("click", () => {
@@ -49,7 +68,7 @@ nextBtn.addEventListener("click", () => {
 });
 
 function addAmount() {
-  if (parseInt(amount.value) < 99) {
+  if (parseInt(amount.value) < max_value_flower) {
     amount.value = parseInt(amount.value) + 1;
   }
 }
@@ -60,6 +79,11 @@ function subAmount() {
   }
 }
 
+function checkQuantity(e) {
+  if (e.value > max_value_flower) {
+    e.value = max_value_flower;
+  }
+}
 btn_order_now.addEventListener("click", () => {
   const form = document.createElement("form");
   form.setAttribute("method", "post");

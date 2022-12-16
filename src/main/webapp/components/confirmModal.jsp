@@ -15,8 +15,8 @@
                     <%=contentModal%>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-outline-danger" id="<%=idBtn%>">Ok</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Huỷ</button>
+                    <button type="button" class="btn btn-outline-danger" id="<%=idBtn%>">Xác nhận</button>
                 </div>
             </div>
         </div>

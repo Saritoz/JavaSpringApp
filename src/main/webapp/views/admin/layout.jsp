@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Page</title>
+    <title>Trang Admin</title>
     <link rel="stylesheet" href="../../css/admin/layout.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
@@ -18,7 +18,7 @@
             <ul>
                 <li>
                     <a href="#">
-                        <span class="ct-title ct-page-title">Management</span>
+                        <span class="ct-title ct-page-title">Quản lý</span>
                     </a>
                 </li>
                 <li <%if(active == 0) {%> class="active" <%}%>>

@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.criteria.Order;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -136,10 +137,41 @@ public class HomeController {
         return "/user/login";
     }
 
+    @RequestMapping(value = "/history", method = RequestMethod.GET)
+    public String getHistoryOrder(ModelMap modelMap) {
+        Iterable<OrderF> orders = orderRepository.findAllOrderByUsername("lnkhanhduy");
+        modelMap.addAttribute("orders", orders);
+        return "/user/historyorder";
+    }
+
     @RequestMapping(value = "/flowers", method = RequestMethod.GET)
     public String getFlowerList(ModelMap modelMap) {
         Iterable<Flower> flowers = flowerRepository.findAll();
         modelMap.addAttribute("flowers", flowers);
+        return "/user/flowerlist";
+    }
+
+    @RequestMapping(value = "/flowers/{category}", method = RequestMethod.GET)
+    public String getFlowerListByTheme(ModelMap modelMap, @PathVariable String category) {
+        if (category.equals("birthday")) {
+            Iterable<Flower> flowers = flowerRepository.findByCategoryBirthday(category);
+            modelMap.addAttribute("flowers", flowers);
+        } else if (category.equals("congrate")) {
+            Iterable<Flower> flowers = flowerRepository.findByCategoryCongrate(category);
+            modelMap.addAttribute("flowers", flowers);
+        } else if (category.equals("love")) {
+            Iterable<Flower> flowers = flowerRepository.findByCategoryLove(category);
+            modelMap.addAttribute("flowers", flowers);
+        } else if (category.equals("open")) {
+            Iterable<Flower> flowers = flowerRepository.findByCategoryOpen(category);
+            modelMap.addAttribute("flowers", flowers);
+        } else if (category.equals("wedding")) {
+            Iterable<Flower> flowers = flowerRepository.findByCategoryWedding(category);
+            modelMap.addAttribute("flowers", flowers);
+        } else if (category.equals("foreign")) {
+            Iterable<Flower> flowers = flowerRepository.findByCategoryForeign(category);
+            modelMap.addAttribute("flowers", flowers);
+        }
         return "/user/flowerlist";
     }
 
@@ -205,19 +237,17 @@ public class HomeController {
         return "/user/flowerinfo";
     }
 
+    @GetMapping("/flowerinfo/detail/{id}")
+    public ResponseEntity<Flower> getFlowerById(@PathVariable String id) {
+        Flower flower = flowerRepository.findFlowerByIdFlower(Integer.parseInt(id));
+        return new ResponseEntity<>(flower, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
     public String getCart(ModelMap modelMap) {
         Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
         int quantity_flower = 0;
         int total = 0;
-        List<Integer> list_id = new ArrayList<>();
-        List<String> list_name = new ArrayList<>();
-        for (Cart cart : carts) {
-            quantity_flower += cart.getQuantityFlower();
-            total += cart.getTotal();
-            list_id.add(cart.getIdFlower());
-            list_name.add(cart.getNameFlower());
-        }
         modelMap.addAttribute("carts", carts);
         modelMap.addAttribute("totalFlower", quantity_flower);
         modelMap.addAttribute("total", total);
@@ -260,6 +290,18 @@ public class HomeController {
         Iterable<Flower> flowers1 = flowerRepository.findAll();
         modelMap.addAttribute("flowers", flowers1);
         return "/user/flowerlist";
+    }
+
+    @RequestMapping(value = "/cart/delete", method = RequestMethod.POST)
+    public String postDelteCart(ModelMap modelMap, @RequestParam("id-cart") String id_cart) {
+        cartRepository.updateCancelCart(Integer.parseInt(id_cart));
+        Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
+        int quantity_flower = 0;
+        int total = 0;
+        modelMap.addAttribute("carts", carts);
+        modelMap.addAttribute("totalFlower", quantity_flower);
+        modelMap.addAttribute("total", total);
+        return "/user/cartstep1";
     }
 
     @RequestMapping(value = "/cart/ordernow", method = RequestMethod.POST)
@@ -362,14 +404,15 @@ public class HomeController {
             @RequestParam("shipment") String shipment, @RequestParam("payment") String payment,
             @RequestParam("id-flower") String id_flower, @RequestParam("quantity-flower") String quantity_flower,
             @RequestParam("total") String total, @RequestParam("name-flower") String name_flower) {
+        Flower flower = flowerRepository.findFlowerByIdFlower(Integer.parseInt(id_flower));
         int priceShipment = 0;
-        String shipmetString = "";
+        String shipmentString = "";
         if (shipment.equals("normal")) {
             priceShipment = 30000;
-            shipmetString = "Thường";
+            shipmentString = "Thường";
         } else {
             priceShipment = 60000;
-            shipmetString = "Hoả tốc";
+            shipmentString = "Hoả tốc";
         }
         int totalOrder = Integer.parseInt(total) + priceShipment;
         String id_random = hashPassword.RandomId(10);
@@ -377,10 +420,12 @@ public class HomeController {
         LocalDateTime now = LocalDateTime.now();
         OrderF order = new OrderF(0, id_random, fullname, email,
                 pnumber, address, "lnkhanhduy", Integer.parseInt(id_flower), name_flower,
-                Integer.parseInt(quantity_flower), Integer.parseInt(total), "Chờ xác nhận", shipmetString, "COD",
+                Integer.parseInt(quantity_flower), Integer.parseInt(total), "Chờ xác nhận", shipmentString, "COD",
                 priceShipment,
-                totalOrder, dtf.format(now).toString());
+                totalOrder, dtf.format(now).toString(), "");
         orderRepository.save(order);
+        flowerRepository.updateQuantityFlower(flower.getQuantity() - Integer.parseInt(quantity_flower),
+                Integer.parseInt(id_flower));
         return "/user/index";
     }
 
@@ -391,14 +436,14 @@ public class HomeController {
             @RequestParam("shipment") String shipment, @RequestParam("payment") String payment,
             @RequestParam("total") String total) {
         int priceShipment = 0;
-        String shipmetString = "";
+        String shipmentString = "";
 
         if (shipment.equals("normal")) {
             priceShipment = 30000;
-            shipmetString = "Thường";
+            shipmentString = "Thường";
         } else {
             priceShipment = 60000;
-            shipmetString = "Hoả tốc";
+            shipmentString = "Hoả tốc";
         }
         int totalOrder = Integer.parseInt(total) + priceShipment;
         Iterable<Cart> carts = cartRepository.findCartByUsernameOrder("lnkhanhduy");
@@ -417,11 +462,14 @@ public class HomeController {
             OrderF order = new OrderF(id, id_random, fullname, email,
                     pnumber, address, "lnkhanhduy", cart.getIdFlower(), cart.getNameFlower(),
                     cart.getQuantityFlower(), cart.getQuantityFlower() * cart.getPriceFlower(), "Chờ xác nhận",
-                    shipment, "COD", priceShipment,
-                    totalOrder, dtf.format(now).toString());
+                    shipmentString, "COD", priceShipment,
+                    totalOrder, dtf.format(now).toString(), "");
             orders.add(order);
             orderRepository.save(order);
             cartRepository.updateWaitingCart(cart.getId());
+            Flower flower = flowerRepository.findFlowerByIdFlower(cart.getIdFlower());
+            flowerRepository.updateQuantityFlower(flower.getQuantity() - cart.getQuantityFlower(),
+                    cart.getIdFlower());
         }
 
         return "/user/index";

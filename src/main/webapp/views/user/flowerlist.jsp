@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flowers</title>
+    <title>Tất cả hoa</title>
     <link rel="stylesheet" href="../../css/user/flowerlist.css">
     <link rel="stylesheet" href="../../css/user/header.css">
 </head>
@@ -17,8 +17,8 @@
     <section class="flower-list container m-header">
         <div class="row">
             <div class="col-4">
-                <div class="filter-title">Bộ lọc sản phẩm</div>
-                <form action="" method="post">
+                <div class="filter-title">Tìm kiếm sản phẩm</div>
+                <form action="../flowers" method="post">
                     <div class="mb-3">
                         <label for="sort-asc-desc" class="form-label">Sắp xếp theo giá</label>
                         <select id="sort-asc-desc" class="form-select" aria-label="Sort" name="sort-price">
@@ -72,19 +72,15 @@
                         <label for="byname" class="form-label">Tìm theo tên</label>
                         <input id="byname" type="text" class="form-control" name="byname" value="${name}">
                     </div>
-                    <!-- <div class="mb-3">
-                        <label for="byid" class="form-label">Tìm theo id</label>
-                        <input id="byid" type="text" class="form-control" name="byid">
-                    </div> -->
-                    <button class="ct-outline-button" style="--ct-color: blue">Lọc</button>
+                    <button class="ct-outline-button" style="--ct-color: blue">Tìm kiếm</button>
                 </form>
             </div>  
             <div class="col-8">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-2">
                     <c:forEach var="flower" items="${flowers}">
                         <div class="col">
-                            <div class="card" style="width: 100%;">
-                                <img src="../../images/${flower.getImage1()}" class="card-img-top" alt="..." width="100%">
+                            <div class="card" style="width: 100%; height: 300px;">
+                                <img src="../../images/${flower.getImage1()}" class="card-img-top" alt="Hình ảnh" style="object-fit: cover; height: 185px;">
                                 <div class="ct-card-flip">
                                     <div class="ct-flip-box">
                                         <div class="card-body ct-card-front">

@@ -7,9 +7,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Info Flower</title>
+    <title>Thông tin sản phẩm</title>
     <link rel="stylesheet" href="../../css/user/flowerinfo.css" />
     <link rel="stylesheet" href="../../css/user/header.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -31,11 +32,11 @@
                             <img class="item-slider" src="../../images/${flower.getImage5()}" alt="" />
                         </div>
                         <div class="thumbnails">
-                            <img class="item-thumbnail" src="../../images/${flower.getImage1()}" alt="" />
-                            <img class="item-thumbnail" src="../../images/${flower.getImage2()}" alt="" />
-                            <img class="item-thumbnail" src="../../images/${flower.getImage3()}" alt="" />
-                            <img class="item-thumbnail" src="../../images/${flower.getImage4()}" alt="" />
-                            <img class="item-thumbnail" src="../../images/${flower.getImage5()}" alt="" />
+                            <img class="item-thumbnail" src="../../images/${flower.getImage1()}" alt="" style="object-fit: cover;" />
+                            <img class="item-thumbnail" src="../../images/${flower.getImage2()}" alt="" style="object-fit: cover;" />
+                            <img class="item-thumbnail" src="../../images/${flower.getImage3()}" alt="" style="object-fit: cover;" />
+                            <img class="item-thumbnail" src="../../images/${flower.getImage4()}" alt="" style="object-fit: cover;" />
+                            <img class="item-thumbnail" src="../../images/${flower.getImage5()}" alt="" style="object-fit: cover;" />
                         </div>
                         <div class="back-btn">
                             <i class="fa-solid fa-chevron-left"></i>
@@ -68,7 +69,7 @@
                         <div class="mb-4">
                             <label class="amount-label text-gray" for="amount-item">Số lượng:</label>
                             <button class="fa-solid fa-minus text-gray ct-btn-amount" onclick="subAmount()"></button>
-                            <input type="number" class="amount-item" name="amount" value="1" min="1" maxlength="2" id="amount">
+                            <input type="number" class="amount-item" name="amount" value="1" min="1" maxlength="2" id="amount" onchange="checkQuantity(this)">
                             <button class="fa-solid fa-plus text-gray ct-btn-amount" onclick="addAmount()"></button>
                         </div>
                         <a href="#" id="btn-order-now-info" class="ct-btn me-4" style="--ct-color: #ffa500">Đặt hàng ngay</a>
@@ -81,10 +82,10 @@
                     </div>
                     <div class="tab-pane fade" id="moreinfo" role="tabpanel" aria-labelledby="moreinfo-tab">
                         <p class="mt-2 text-justify fs-5">
-                            Sản phẩm bao gồm:
+                            <!-- Sản phẩm bao gồm:
                             <ul>
                                 <li class="text-gray">1 bó hoa hướng dương</li>
-                            </ul>
+                            </ul> -->
                         </p>
                     </div>
                 </div>

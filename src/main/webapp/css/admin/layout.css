@@ -135,9 +135,7 @@
     padding: 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 10px;
-    cursor: pointer;
-    
+    column-gap: 10px;    
 }
 
 .ct-card-box .ct-card {

@@ -26,4 +26,9 @@ public interface CartRepository extends CrudRepository<Cart, Integer> {
     @Transactional
     @Query(value = "UPDATE Cart c SET c.status = 'Đã đặt hàng' WHERE c.id = ?1", nativeQuery = true)
     void updateWaitingCart(@Param("id") int id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Cart c SET c.status = 'Đã huỷ' WHERE c.id = ?1", nativeQuery = true)
+    void updateCancelCart(@Param("id") int id);
 }

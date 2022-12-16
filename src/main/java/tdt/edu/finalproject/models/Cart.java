@@ -48,71 +48,35 @@ public class Cart {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getIdFlower() {
         return idFlower;
-    }
-
-    public void setIdFlower(int idFlower) {
-        this.idFlower = idFlower;
     }
 
     public String getNameFlower() {
         return nameFlower;
     }
 
-    public void setNameFlower(String nameFlower) {
-        this.nameFlower = nameFlower;
-    }
-
     public int getQuantityFlower() {
         return quantityFlower;
-    }
-
-    public void setQuantityFlower(int quantityFlower) {
-        this.quantityFlower = quantityFlower;
     }
 
     public int getPriceFlower() {
         return priceFlower;
     }
 
-    public void setPriceFlower(int priceFlower) {
-        this.priceFlower = priceFlower;
-    }
-
     public String getImageFlower() {
         return imageFlower;
-    }
-
-    public void setImageFlower(String imageFlower) {
-        this.imageFlower = imageFlower;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public int getTotal() {
         return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
     }
 }

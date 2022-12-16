@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Method</title>
+    <title>Thanh toán</title>
     <link rel="stylesheet" href="../../css/user/cartstep3.css">
     <link rel="stylesheet" href="../../css/user/header.css">
 </head>
@@ -36,13 +36,13 @@
                     <div class="col-12">
                         <label for="shipment" class="form-label fs-5 ct-label d-block">Phương thức giao hàng</label>
                         <div class="form-check">
-                            <input checked class="form-check-input" type="radio" name="shipment" id="shipment1" value="normal">
+                            <input checked class="form-check-input" type="radio" name="shipment" id="shipment1" value="normal" onclick="changeTotal(this)">
                             <label class="form-check-label" for="shipment1">
                                 Giao hàng thường
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="shipment" id="shipment2" value="fast">
+                            <input class="form-check-input" type="radio" name="shipment" id="shipment2" value="fast" onclick="changeTotal(this)">
                             <label class="form-check-label" for="shipment2">
                                 Giao hàng chuyển phát nhanh
                             </label>
@@ -82,17 +82,17 @@
                     <tbody class="ct-table-body" style="vertical-align: middle;">
                         <tr>
                             <td>Tổng tiền hàng</td>
-                            <td>${total}</td>
+                            <td id="total-flower">${total} VND</td>
                         </tr>
                         <tr>
                             <td>Phí vận chuyển</td>
-                            <td>32.000 VND</td>
+                            <td id="price-ship">30000 VND</td>
                         </tr>
                     </tbody>
                     <tfoot class="ct-table-footer" style="vertical-align: middle;">
                         <tr>
                             <th>Tổng tiền thanh toán</th>
-                            <th>598.000 VND</th>
+                            <th id="total-pay">${total+30000} VND</th>
                         </tr>
                     </tfoot>
                 </table>

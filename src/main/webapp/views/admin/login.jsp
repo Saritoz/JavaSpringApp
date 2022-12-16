@@ -5,29 +5,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Authentication</title>
+    <title>Đăng nhập</title>
     <link rel="stylesheet" href="../../css/admin/login.css">
 </head>
 <body>
     <section class="login-admin d-flex justify-content-center align-items-center">
         <div class="login-box">
             <form action="" method="" class="needs-validation mx-4 my-2" novalidate>
-                <p class="text-center fs-3">Login</p>
+                <p class="text-center fs-3">Đăng nhập</p>
                 <div class="mb-3">
-                    <label for="admin-username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="admin-username" value="" placeholder="username" required>
+                    <label for="admin-username" class="form-label">Tên đăng nhập</label>
+                    <input type="text" class="form-control" id="admin-username" value="" placeholder="Tên đăng nhập" required>
                     <div class="invalid-feedback">
-                    Please enter username!
+                        Vui lòng điền tên đăng nhập!
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="admin-password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="admin-password" value="" placeholder="password" required>
+                    <label for="admin-password" class="form-label">Mật khẩu</label>
+                    <input type="password" class="form-control" id="admin-password" value="" placeholder="Mật khẩu" required>
                     <div class="invalid-feedback">
-                    Please enter password!
+                        Vui lòng điền mật khẩu!
                     </div>
                 </div>
-                <button class="btn btn-success px-5 py-2">Login</button>
+                <button class="btn btn-success px-5 py-2">Đăng nhập</button>
             </form>
         </div>
     </section>
