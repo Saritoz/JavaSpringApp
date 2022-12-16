@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,12 +31,16 @@ import tdt.edu.finalproject.repositories.AccountRepository;
 import tdt.edu.finalproject.repositories.CartRepository;
 import tdt.edu.finalproject.repositories.FlowerRepository;
 import tdt.edu.finalproject.repositories.OrderRepository;
+import tdt.edu.finalproject.repositories.SendEmailService;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private SendEmailService sendEmailService;
 
     @Autowired
     private FlowerRepository flowerRepository;
@@ -552,5 +558,60 @@ public class HomeController {
             return "/user/login";
         }
         return "/user/index";
+    }
+
+    @PostMapping("/forgot")
+    public ResponseEntity<String> postForgot(@RequestBody String email, HttpSession httpSession)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if (httpSession.getAttribute("username") == null) {
+            Account account = accountRepository.findAccountByEmail(email);
+            if (account != null) {
+                String newPassword = hashPassword.RandomId(10);
+                String passwordHashed = hashPassword.GenerateStringPasswordHash(newPassword);
+                accountRepository.updatePasswordAccount(passwordHashed, account.getUsername());
+                sendEmailService.sendEmail(email, "Đặt lại mật khẩu", "Mật khẩu mới của bạn là: " + newPassword);
+                System.out.println("Sent email success");
+                return new ResponseEntity<>("Sent Email success", HttpStatus.OK);
+            }
+        }
+        return null;
+    }
+
+    @PostMapping("/changepassword")
+    public ResponseEntity<String> changeForgot(@RequestBody String password, HttpSession httpSession)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            String passwordHashed = hashPassword.GenerateStringPasswordHash(password);
+            accountRepository.updatePasswordAccount(passwordHashed, username);
+            return new ResponseEntity<>("Change Password success", HttpStatus.OK);
+
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/editaccount", method = RequestMethod.POST)
+    public String editAccount(ModelMap modelMap, @RequestParam("fullname") String fullname,
+            @RequestParam("email") String email,
+            HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            accountRepository.updateAccount(fullname, email, username);
+            Account account = accountRepository.findAccountByUsername(username);
+            modelMap.addAttribute("account", account);
+            return "/user/profile";
+        }
+        return "/user/login";
+    }
+
+    @RequestMapping(value = "/deleteaccount", method = RequestMethod.POST)
+    public String deleteAccount(HttpSession httpSession) {
+        if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
+            String username = (String) httpSession.getAttribute("username");
+            httpSession.removeAttribute("username");
+            httpSession.removeAttribute("role");
+            accountRepository.deleteByUsername(username);
+        }
+        return "/user/login";
     }
 }

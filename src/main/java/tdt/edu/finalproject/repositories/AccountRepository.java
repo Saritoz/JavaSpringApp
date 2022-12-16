@@ -25,4 +25,9 @@ public interface AccountRepository extends CrudRepository<Account, String> {
     @Transactional
     @Query(value = "UPDATE Account a SET a.password = ?1 WHERE a.username = ?2", nativeQuery = true)
     void updatePasswordAccount(@Param("password") String password, @Param("username") String username);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Account a SET a.fullname = ?1, a.email = ?2 WHERE a.username = ?3", nativeQuery = true)
+    void updateAccount(@Param("fullname") String fullname, @Param("email") String email, @Param("username") String username);
 }
