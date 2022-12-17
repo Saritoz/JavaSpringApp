@@ -63,7 +63,6 @@ public class HomeController {
         if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
             return "/user/index";
         }
-
         return "/user/login";
     }
 
@@ -268,6 +267,10 @@ public class HomeController {
             Iterable<Cart> carts = cartRepository.findCartByUsernameOrder(username);
             int quantity_flower = 0;
             int total = 0;
+            for (Cart cart : carts) {
+                quantity_flower += cart.getQuantityFlower();
+                total += cart.getTotal();
+            }
             modelMap.addAttribute("carts", carts);
             modelMap.addAttribute("totalFlower", quantity_flower);
             modelMap.addAttribute("total", total);
@@ -303,6 +306,7 @@ public class HomeController {
                                 "Thêm vào giỏ", total);
                         cartRepository.save(cart1);
                         Iterable<Flower> flowers1 = flowerRepository.findAll();
+                        modelMap.addAttribute("message", "Thêm vào giỏ hàng thành công!");
                         modelMap.addAttribute("flowers", flowers1);
                         return "/user/flowerlist";
                     }
@@ -312,6 +316,7 @@ public class HomeController {
             Cart cart = new Cart(0, flower_id, name, flower_amount, price, image, username, "Thêm vào giỏ", total);
             cartRepository.save(cart);
             Iterable<Flower> flowers1 = flowerRepository.findAll();
+            modelMap.addAttribute("message", "Thêm vào giỏ hàng thành công!");
             modelMap.addAttribute("flowers", flowers1);
             return "/user/flowerlist";
         }
@@ -326,9 +331,14 @@ public class HomeController {
             Iterable<Cart> carts = cartRepository.findCartByUsernameOrder(username);
             int quantity_flower = 0;
             int total = 0;
+            for (Cart cart : carts) {
+                quantity_flower += cart.getQuantityFlower();
+                total += cart.getTotal();
+            }
             modelMap.addAttribute("carts", carts);
             modelMap.addAttribute("totalFlower", quantity_flower);
             modelMap.addAttribute("total", total);
+            modelMap.addAttribute("message", "Xoá sản phẩm thành công!");
             return "/user/cartstep1";
         }
         return "/user/login";
@@ -484,6 +494,7 @@ public class HomeController {
             orderRepository.save(order);
             flowerRepository.updateQuantityFlower(flower.getQuantity() - Integer.parseInt(quantity_flower),
                     Integer.parseInt(id_flower));
+            modelMap.addAttribute("message", "Đặt hàng thành công!");
             return "/user/index";
         }
         return "/user/login";
@@ -533,7 +544,7 @@ public class HomeController {
                 flowerRepository.updateQuantityFlower(flower.getQuantity() - cart.getQuantityFlower(),
                         cart.getIdFlower());
             }
-
+            modelMap.addAttribute("message", "Đặt hàng thành công!");
             return "/user/index";
         }
         return "/user/login";
@@ -577,26 +588,63 @@ public class HomeController {
         return null;
     }
 
-    @PostMapping("/changepassword")
-    public ResponseEntity<String> changeForgot(@RequestBody String password, HttpSession httpSession)
+    @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
+    public String changeForgot(ModelMap modelMap, @RequestParam("password") String password,
+            @RequestParam("confirm-password") String confirm_password, HttpSession httpSession)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String error = "";
+        String username = "";
         if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
-            String username = (String) httpSession.getAttribute("username");
-            String passwordHashed = hashPassword.GenerateStringPasswordHash(password);
-            accountRepository.updatePasswordAccount(passwordHashed, username);
-            return new ResponseEntity<>("Change Password success", HttpStatus.OK);
-
+            username = (String) httpSession.getAttribute("username");
+            if (!password.isEmpty() && !confirm_password.isEmpty() && password.equals(confirm_password)) {
+                String passwordHashed = hashPassword.GenerateStringPasswordHash(password);
+                accountRepository.updatePasswordAccount(passwordHashed, username);
+                modelMap.addAttribute("message", "Đổi mật khẩu thành công!");
+            } else if (password.isEmpty() || confirm_password.isEmpty()) {
+                error = "Vui lòng nhập đầy đủ thông tin!";
+            } else if (password.length() < 6) {
+                error = "Mật khẩu ít nhất 6 kí tự";
+            } else if (!password.equals(confirm_password)) {
+                error = "Mật khẩu không trùng khớp!";
+            }
+        } else {
+            return "/user/login";
         }
-        return null;
+
+        if (!error.isEmpty()) {
+            modelMap.addAttribute("error", error);
+        }
+        Account account = accountRepository.findAccountByUsername(username);
+        modelMap.addAttribute("account", account);
+        return "/user/profile";
     }
 
     @RequestMapping(value = "/editaccount", method = RequestMethod.POST)
     public String editAccount(ModelMap modelMap, @RequestParam("fullname") String fullname,
             @RequestParam("email") String email,
             HttpSession httpSession) {
+        String error = "";
+        String username = "";
         if (httpSession.getAttribute("username") != null && httpSession.getAttribute("role").equals("user")) {
-            String username = (String) httpSession.getAttribute("username");
-            accountRepository.updateAccount(fullname, email, username);
+            username = (String) httpSession.getAttribute("username");
+            if (!fullname.isEmpty() && !email.isEmpty()) {
+                if (email.contains("@")) {
+                    Account findByEmail = accountRepository.findAccountByEmail(email);
+                    if (findByEmail != null && !findByEmail.getUsername().equals(username)) {
+                        error = "Email đã tồn tại!";
+                    } else {
+                        accountRepository.updateAccount(fullname, email, username);
+                        modelMap.addAttribute("message", "Thay đổi thông tin thành công!");
+                    }
+                } else {
+                    error = "Email không đúng định dạng!";
+                }
+            } else {
+                error = "Vui lòng nhập đầy đủ thông tin!";
+            }
+            if (!error.isEmpty()) {
+                modelMap.addAttribute("error", error);
+            }
             Account account = accountRepository.findAccountByUsername(username);
             modelMap.addAttribute("account", account);
             return "/user/profile";

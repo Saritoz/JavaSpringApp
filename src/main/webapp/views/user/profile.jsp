@@ -9,6 +9,7 @@
     <title>Thông tin tài khoản</title>
     <link rel="stylesheet" href="../css/user/profile.css">
     <link rel="stylesheet" href="../css/user/header.css">
+    <link rel="stylesheet" href="../../css/popup.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
@@ -16,12 +17,14 @@
 </head>
 <body>
     <%@include file="../../components/header.jsp" %>
+    <div id="pp-toast">
+    </div>
     <section class="personal-info container m-header">
         <div class="image-user">
             <img src="../../imgs/defaultimg.png" alt="" width="100%">
         </div>
         <div class="name-user">
-            <p>Sarito</p>
+            <p>${account.getFullname()}</p>
         </div>
         <div class="row mt-5 g-5">
             <div class="col-12 col-md-6 info-item" style="--delay: 0s">
@@ -94,7 +97,6 @@
                         <label for="email" class="form-label">Email</label>
                         <input type="text" class="form-control" id="email" value="${account.getEmail()}">
                     </div>
-                    <div id="check-confirm-edit" style="color: ff0000;" hidden>Vui lòng điền đầy đủ thông tin!</div>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-outline-danger" value="Quay lại" data-bs-dismiss="modal">
@@ -126,6 +128,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
             crossorigin="anonymous"></script>
+    <script src="../../js/popup.js"></script>
     <script src="../../js/user/profile.js"></script>
+    <c:forEach var="msg" items="${message}">
+        <script>
+            createToastPopup({color:"#0000ff", type:"info", title: "Thành công", content: "${msg}"});
+        </script>
+    </c:forEach> 
+    <c:forEach var="err" items="${error}">
+        <script>
+            createToastPopup({color:"#ff0000", type:"info", title: "Lỗi", content: "${err}"});
+        </script>
+    </c:forEach>    
 </body>
 </html>
