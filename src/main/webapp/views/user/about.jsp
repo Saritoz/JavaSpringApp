@@ -56,36 +56,26 @@
                   <p>Nguyễn Đình Dũng</p>
                 </div>
                 <span>></span>
-              </div>
-              <!-- <div class="ct-card-social ct-linkedin">
-                <div class="ct-icon-wrapper">
-                  <i class="fab fa-linkedin"></i>
-                </div>
-                <div class="ct-contact-details">
-                  <h4>LinkedIn</h4>
-                  <p>@janebrown</p>
-                </div>
-                <span>></span>
-              </div> -->
+              </div>                
             </div>
           </div>
           <div class="ct-container">
             <div class="ct-card">
               <div class="ct-card-bio">
                 <div class="ct-img-wrapper">
-                  <img src="../../imgs/defaultimg.png" alt="Person" />
+                  <img src="../../imgs/51900589.jpg" alt="Person" />
                 </div>
                 <div class="ct-person-info">
-                  <h3>Jane Brown</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                  <h3>51900589</h3>
+                  <p>Lê Nguyễn Khánh Duy</p>
                 </div>
                 <button class="ct-card-btn">
-                  <span class="ct-card-btn-contact">Contact Me</span>
+                  <span class="ct-card-btn-contact">Liên hệ</span>
                   <i class="fas fa-angle-up"></i>
                 </button>
               </div>
               <div class="ct-card-contact">
-                <h4>Contact Me</h4>
+                <h4>Liên hệ</h4>
               </div>
               <div class="ct-card-social ct-email">
                 <div class="ct-icon-wrapper">
@@ -93,7 +83,7 @@
                 </div>
                 <div class="ct-contact-details">
                   <h4>Email</h4>
-                  <p>janebrown@gmail.com</p>
+                  <p>khanhduyhbvl20011@gmail.com</p>
                 </div>
                 <span>></span>
               </div>
@@ -103,17 +93,7 @@
                 </div>
                 <div class="ct-contact-details">
                   <h4>Facebook</h4>
-                  <p>Jane Brown</p>
-                </div>
-                <span>></span>
-              </div>
-              <div class="ct-card-social ct-linkedin">
-                <div class="ct-icon-wrapper">
-                  <i class="fab fa-linkedin"></i>
-                </div>
-                <div class="ct-contact-details">
-                  <h4>LinkedIn</h4>
-                  <p>@janebrown</p>
+                  <p>Lê Nguyễn Khánh Duy</p>
                 </div>
                 <span>></span>
               </div>
@@ -123,19 +103,19 @@
             <div class="ct-card">
               <div class="ct-card-bio">
                 <div class="ct-img-wrapper">
-                  <img src="../../imgs/defaultimg.png" alt="Person" />
+                  <img src="../../imgs/51900593.png" alt="Person" />
                 </div>
                 <div class="ct-person-info">
-                  <h3>Jane Brown</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                  <h3>51900593</h3>
+                  <p>Đỗ Thị Thu Hiền</p>
                 </div>
                 <button class="ct-card-btn">
-                  <span class="ct-card-btn-contact">Contact Me</span>
+                  <span class="ct-card-btn-contact">Liên hệ</span>
                   <i class="fas fa-angle-up"></i>
                 </button>
               </div>
               <div class="ct-card-contact">
-                <h4>Contact Me</h4>
+                <h4>Liên hệ</h4>
               </div>
               <div class="ct-card-social ct-email">
                 <div class="ct-icon-wrapper">
@@ -143,7 +123,7 @@
                 </div>
                 <div class="ct-contact-details">
                   <h4>Email</h4>
-                  <p>janebrown@gmail.com</p>
+                  <p>dothithuhien188@gmail.com</p>
                 </div>
                 <span>></span>
               </div>
@@ -153,17 +133,7 @@
                 </div>
                 <div class="ct-contact-details">
                   <h4>Facebook</h4>
-                  <p>Jane Brown</p>
-                </div>
-                <span>></span>
-              </div>
-              <div class="ct-card-social ct-linkedin">
-                <div class="ct-icon-wrapper">
-                  <i class="fab fa-linkedin"></i>
-                </div>
-                <div class="ct-contact-details">
-                  <h4>LinkedIn</h4>
-                  <p>@janebrown</p>
+                  <p>Đỗ Hiền</p>
                 </div>
                 <span>></span>
               </div>
