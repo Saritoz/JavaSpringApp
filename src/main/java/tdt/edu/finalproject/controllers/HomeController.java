@@ -662,4 +662,9 @@ public class HomeController {
         }
         return "/user/login";
     }
+
+    @GetMapping("/about")
+    public String getInfomationPage() {
+        return "/user/about";
+    }
 }

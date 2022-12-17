@@ -36,7 +36,7 @@
                     </ul>
                 </li>
                 <li class="nav-item"><a href="/flowers/foreign" class="nav-link">Hoa ngoại nhập</a></li>
-                <li class="nav-item"><a href="/information" class="nav-link">Thông tin</a></li>
+                <li class="nav-item"><a href="/about" class="nav-link">Thông tin</a></li>
             </ul>
             <div class="d-flex">
                 <ul class="nav">
