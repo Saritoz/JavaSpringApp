@@ -27,7 +27,7 @@ window.onload = () => {
     url: "/flowerinfo/detail/" + flower_id.value,
     dataType: "json",
     cache: false,
-    timeout: 600000,
+    timeout: 10000,
     success: function (data) {
       max_value_flower = data.quantity;
       console.log(max_value_flower);

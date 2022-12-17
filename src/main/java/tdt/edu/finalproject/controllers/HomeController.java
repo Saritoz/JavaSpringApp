@@ -582,7 +582,10 @@ public class HomeController {
                 accountRepository.updatePasswordAccount(passwordHashed, account.getUsername());
                 sendEmailService.sendEmail(email, "Đặt lại mật khẩu", "Mật khẩu mới của bạn là: " + newPassword);
                 System.out.println("Sent email success");
-                return new ResponseEntity<>("Sent Email success", HttpStatus.OK);
+                return new ResponseEntity<>("Sent email success", HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>("Sent email error", HttpStatus.OK);
             }
         }
         return null;

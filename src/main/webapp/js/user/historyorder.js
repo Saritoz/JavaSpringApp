@@ -32,7 +32,7 @@ function openOrderInfoModal(e) {
     url: "/admin/ordermanagement/detail/" + e.dataset.id,
     dataType: "json",
     cache: false,
-    timeout: 600000,
+    timeout: 10000,
     success: function (data) {
       const tbody_order = document.querySelector("#tbody-order");
       tbody_order.innerHTML = "";
@@ -89,7 +89,7 @@ btn_deny.addEventListener("click", () => {
     data: idOrder,
     dataType: "json",
     cache: false,
-    timeout: 600000,
+    timeout: 10000,
     success: function (data) {
       console.log(data);
       if (data == "Update deny") {

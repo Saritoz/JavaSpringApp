@@ -168,12 +168,27 @@ function openForgotModal(e) {
       data: email.value,
       dataType: "json",
       cache: false,
-      timeout: 600000,
+      timeout: 60000,
       success: function (data) {
         console.log(data);
       },
       error: function (e) {
         console.log("ERROR : ", e);
+        if (e.responseText == "Sent email success") {
+          createToastPopup({
+            color: "#0000ff",
+            type: "info",
+            title: "Thành công",
+            content: "Mật khẩu mới đã được gửi tới email của bạn!",
+          });
+        } else {
+          createToastPopup({
+            color: "#ff0000",
+            type: "info",
+            title: "Lỗi",
+            content: "Email không chính xác!",
+          });
+        }
       },
     });
   });
